@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        ungu: "#4f46e5",
+        ungu: "#623cea",
         ungupudar: "#f4f3ff",
         hitampudar: "#555668",
       },

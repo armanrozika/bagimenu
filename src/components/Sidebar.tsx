@@ -5,7 +5,7 @@ import { LiaSignOutAltSolid } from "react-icons/lia";
 import { TfiClose } from "react-icons/tfi";
 import { BsCart2 } from "react-icons/bs";
 import { IoAnalytics } from "react-icons/io5";
-import { MdOutlineManageAccounts } from "react-icons/md";
+import Icon from "./Icon";
 
 function Sidebar({
   isOpen,
@@ -22,27 +22,9 @@ function Sidebar({
         className="lg:hidden absolute top-5 right-5"
         onClick={() => setIsOpen(false)}
       />
-      <svg
-        fill="none"
-        height="48"
-        viewBox="0 0 40 48"
-        width="40"
-        xmlns="http://www.w3.org/2000/svg"
-        className="mx-auto mb-10"
-      >
-        <g fill="#6938ef">
-          <path
-            d="m5.03741 15.4637c.7506-2.8008 3.62961-5.67985 6.43049-6.43044l17.4617-4.67957c2.8009-.7506 4.4629.91146 3.7123 3.71231l-4.6795 17.4617c-.7506 2.8009-3.6297 5.6799-6.4305 6.4305l-17.46175 4.6796c-2.80085.7505-4.462904-.9115-3.712306-3.7124z"
-            opacity=".7"
-          />
-          <path
-            d="m12.0355 22.4642c.7506-2.8008 3.6296-5.6799 6.4304-6.4305l17.4617-4.6795c2.8009-.7506 4.4629.9114 3.7123 3.7123l-4.6795 17.4617c-.7506 2.8009-3.6296 5.6799-6.4305 6.4305l-17.4617 4.6795c-2.80085.7506-4.46291-.9114-3.71231-3.7123z"
-            opacity=".7"
-          />
-        </g>
-      </svg>
+      <Icon />
       <Link
-        className="transition mb-1 rounded p-3 text-ungu text-sm bg-ungupudar flex items-center font-semibold"
+        className="transition mb-1 mt-10 rounded p-3 text-ungu text-sm bg-ungupudar flex items-center font-semibold"
         to=""
         onClick={() => setIsOpen(false)}
       >
@@ -91,14 +73,7 @@ function Sidebar({
           <AiOutlineShop className="mr-3 text-xl" />
           <p>Toko</p>
         </Link>
-        <Link
-          to=""
-          className="transition mb-1  rounded-md p-3 text-sm text-hitampudar flex items-center font-semibold cursor-pointer"
-          onClick={() => setIsOpen(false)}
-        >
-          <MdOutlineManageAccounts className="mr-3 text-xl" />
-          <p>Profile</p>
-        </Link>
+
         <div className="transition mb-1  rounded-md p-3 text-sm text-hitampudar flex items-center font-semibold cursor-pointer">
           <LiaSignOutAltSolid className="mr-3 text-xl" />
           <p>Logout</p>
