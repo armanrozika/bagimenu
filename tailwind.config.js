@@ -2,7 +2,13 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        ungu: "#4f46e5",
+        ungupudar: "#f4f3ff",
+        hitampudar: "#555668",
+      },
+    },
   },
   plugins: [],
 };
