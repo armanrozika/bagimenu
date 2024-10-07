@@ -2,10 +2,12 @@ import { Link } from "@tanstack/react-router";
 import { GrAppsRounded } from "react-icons/gr";
 import { AiOutlineProduct, AiOutlineShop } from "react-icons/ai";
 import { LiaSignOutAltSolid } from "react-icons/lia";
+import { useQuery } from "convex/react";
 import { TfiClose } from "react-icons/tfi";
 import { BsCart2 } from "react-icons/bs";
 import { IoAnalytics } from "react-icons/io5";
 import Icon from "./Icon";
+import { api } from "../../convex/_generated/api";
 
 function Sidebar({
   isOpen,
@@ -14,6 +16,9 @@ function Sidebar({
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const tasks = useQuery(api.tasks.get);
+  console.log(tasks);
+
   return (
     <div
       className={`min-w-[90%] lg:min-w-[280px] bg-white z-20 fixed top-0 lg:static ${isOpen ? "left-0" : "-left-full"} border-r border-gray-100 h-screen flex flex-col p-6 duration-300 ease-in-out`}

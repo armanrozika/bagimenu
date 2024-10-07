@@ -11,12 +11,18 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as VerifyEmailImport } from './routes/verify-email'
 import { Route as LoginImport } from './routes/login'
 import { Route as PrivateImport } from './routes/_private'
 import { Route as IndexImport } from './routes/index'
 import { Route as PrivateDashboardIndexImport } from './routes/_private.dashboard/index'
 
 // Create/Update Routes
+
+const VerifyEmailRoute = VerifyEmailImport.update({
+  path: '/verify-email',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const LoginRoute = LoginImport.update({
   path: '/login',
@@ -63,6 +69,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailImport
+      parentRoute: typeof rootRoute
+    }
     '/_private/dashboard/': {
       id: '/_private/dashboard/'
       path: '/dashboard'
@@ -90,6 +103,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof PrivateRouteWithChildren
   '/login': typeof LoginRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/dashboard': typeof PrivateDashboardIndexRoute
 }
 
@@ -97,6 +111,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof PrivateRouteWithChildren
   '/login': typeof LoginRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/dashboard': typeof PrivateDashboardIndexRoute
 }
 
@@ -105,15 +120,22 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_private': typeof PrivateRouteWithChildren
   '/login': typeof LoginRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/_private/dashboard/': typeof PrivateDashboardIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/login' | '/dashboard'
+  fullPaths: '/' | '' | '/login' | '/verify-email' | '/dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/login' | '/dashboard'
-  id: '__root__' | '/' | '/_private' | '/login' | '/_private/dashboard/'
+  to: '/' | '' | '/login' | '/verify-email' | '/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/_private'
+    | '/login'
+    | '/verify-email'
+    | '/_private/dashboard/'
   fileRoutesById: FileRoutesById
 }
 
@@ -121,12 +143,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PrivateRoute: typeof PrivateRouteWithChildren
   LoginRoute: typeof LoginRoute
+  VerifyEmailRoute: typeof VerifyEmailRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PrivateRoute: PrivateRouteWithChildren,
   LoginRoute: LoginRoute,
+  VerifyEmailRoute: VerifyEmailRoute,
 }
 
 export const routeTree = rootRoute
@@ -143,7 +167,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_private",
-        "/login"
+        "/login",
+        "/verify-email"
       ]
     },
     "/": {
@@ -157,6 +182,9 @@ export const routeTree = rootRoute
     },
     "/login": {
       "filePath": "login.tsx"
+    },
+    "/verify-email": {
+      "filePath": "verify-email.tsx"
     },
     "/_private/dashboard/": {
       "filePath": "_private.dashboard/index.tsx",

@@ -2,28 +2,32 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import Icon from "../components/Icon";
 import { FcGoogle } from "react-icons/fc";
+import { useAuthUser } from "../mutations/useAuthUser";
+import { RegisterType } from "../types/types";
 
 export const Route = createFileRoute("/login")({
   component: Login,
 });
 
 function Login() {
-  enum RegisterType {
-    Login,
-    Signup,
-  }
   const [registerState, setRegisterState] = useState<RegisterType>(
     RegisterType.Login
   );
+  const { signUpForm, submitData } = useAuthUser(registerState);
+
   return (
     <div className="flex flex-col justify-center items-center h-screen">
-      <form className="mx-auto my-0 border-2 border-gray-100 p-10 rounded-2xl">
+      <form
+        onSubmit={signUpForm.handleSubmit(submitData)}
+        className="mx-auto my-0 border-2 border-gray-100 p-10 rounded-2xl"
+      >
         <Icon />
         <h1 className="text-center mb-10 text-xl text-ungu text-opacity-80 font-semibold">
           BagiMenu
         </h1>
         <div className="relative mb-3">
           <input
+            {...signUpForm.register("emailAddress")}
             className="border border-gray-200 rounded-lg p-4 w-[300px]"
             type="text"
             placeholder="Email"
@@ -32,6 +36,7 @@ function Login() {
         </div>
         <div className="relative">
           <input
+            {...signUpForm.register("password")}
             className="border w-full border-gray-200 rounded-lg p-4"
             type="password"
             placeholder="Password"
