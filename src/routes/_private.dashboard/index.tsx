@@ -7,8 +7,8 @@ export const Route = createFileRoute("/_private/dashboard/")({
 function Dashboard() {
   return (
     <div>
-      <button className="px-10 rounded text-sm py-2 bg-ungu text-white font-semibold">
-        Button
+      <button className="px-8 py-2 text-sm font-semibold text-white rounded-lg bg-ungu">
+        Simpan
       </button>
     </div>
   );

@@ -15,7 +15,9 @@ import { Route as VerifyEmailImport } from './routes/verify-email'
 import { Route as LoginImport } from './routes/login'
 import { Route as PrivateImport } from './routes/_private'
 import { Route as IndexImport } from './routes/index'
+import { Route as PrivateStoresIndexImport } from './routes/_private.stores/index'
 import { Route as PrivateDashboardIndexImport } from './routes/_private.dashboard/index'
+import { Route as PrivateStoresCreateImport } from './routes/_private.stores/create'
 
 // Create/Update Routes
 
@@ -39,8 +41,18 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const PrivateStoresIndexRoute = PrivateStoresIndexImport.update({
+  path: '/stores/',
+  getParentRoute: () => PrivateRoute,
+} as any)
+
 const PrivateDashboardIndexRoute = PrivateDashboardIndexImport.update({
   path: '/dashboard/',
+  getParentRoute: () => PrivateRoute,
+} as any)
+
+const PrivateStoresCreateRoute = PrivateStoresCreateImport.update({
+  path: '/stores/create',
   getParentRoute: () => PrivateRoute,
 } as any)
 
@@ -76,11 +88,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerifyEmailImport
       parentRoute: typeof rootRoute
     }
+    '/_private/stores/create': {
+      id: '/_private/stores/create'
+      path: '/stores/create'
+      fullPath: '/stores/create'
+      preLoaderRoute: typeof PrivateStoresCreateImport
+      parentRoute: typeof PrivateImport
+    }
     '/_private/dashboard/': {
       id: '/_private/dashboard/'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof PrivateDashboardIndexImport
+      parentRoute: typeof PrivateImport
+    }
+    '/_private/stores/': {
+      id: '/_private/stores/'
+      path: '/stores'
+      fullPath: '/stores'
+      preLoaderRoute: typeof PrivateStoresIndexImport
       parentRoute: typeof PrivateImport
     }
   }
@@ -89,11 +115,15 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface PrivateRouteChildren {
+  PrivateStoresCreateRoute: typeof PrivateStoresCreateRoute
   PrivateDashboardIndexRoute: typeof PrivateDashboardIndexRoute
+  PrivateStoresIndexRoute: typeof PrivateStoresIndexRoute
 }
 
 const PrivateRouteChildren: PrivateRouteChildren = {
+  PrivateStoresCreateRoute: PrivateStoresCreateRoute,
   PrivateDashboardIndexRoute: PrivateDashboardIndexRoute,
+  PrivateStoresIndexRoute: PrivateStoresIndexRoute,
 }
 
 const PrivateRouteWithChildren =
@@ -104,7 +134,9 @@ export interface FileRoutesByFullPath {
   '': typeof PrivateRouteWithChildren
   '/login': typeof LoginRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/stores/create': typeof PrivateStoresCreateRoute
   '/dashboard': typeof PrivateDashboardIndexRoute
+  '/stores': typeof PrivateStoresIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -112,7 +144,9 @@ export interface FileRoutesByTo {
   '': typeof PrivateRouteWithChildren
   '/login': typeof LoginRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/stores/create': typeof PrivateStoresCreateRoute
   '/dashboard': typeof PrivateDashboardIndexRoute
+  '/stores': typeof PrivateStoresIndexRoute
 }
 
 export interface FileRoutesById {
@@ -121,21 +155,39 @@ export interface FileRoutesById {
   '/_private': typeof PrivateRouteWithChildren
   '/login': typeof LoginRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/_private/stores/create': typeof PrivateStoresCreateRoute
   '/_private/dashboard/': typeof PrivateDashboardIndexRoute
+  '/_private/stores/': typeof PrivateStoresIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/login' | '/verify-email' | '/dashboard'
+  fullPaths:
+    | '/'
+    | ''
+    | '/login'
+    | '/verify-email'
+    | '/stores/create'
+    | '/dashboard'
+    | '/stores'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/login' | '/verify-email' | '/dashboard'
+  to:
+    | '/'
+    | ''
+    | '/login'
+    | '/verify-email'
+    | '/stores/create'
+    | '/dashboard'
+    | '/stores'
   id:
     | '__root__'
     | '/'
     | '/_private'
     | '/login'
     | '/verify-email'
+    | '/_private/stores/create'
     | '/_private/dashboard/'
+    | '/_private/stores/'
   fileRoutesById: FileRoutesById
 }
 
@@ -177,7 +229,9 @@ export const routeTree = rootRoute
     "/_private": {
       "filePath": "_private.tsx",
       "children": [
-        "/_private/dashboard/"
+        "/_private/stores/create",
+        "/_private/dashboard/",
+        "/_private/stores/"
       ]
     },
     "/login": {
@@ -186,8 +240,16 @@ export const routeTree = rootRoute
     "/verify-email": {
       "filePath": "verify-email.tsx"
     },
+    "/_private/stores/create": {
+      "filePath": "_private.stores/create.tsx",
+      "parent": "/_private"
+    },
     "/_private/dashboard/": {
       "filePath": "_private.dashboard/index.tsx",
+      "parent": "/_private"
+    },
+    "/_private/stores/": {
+      "filePath": "_private.stores/index.tsx",
       "parent": "/_private"
     }
   }

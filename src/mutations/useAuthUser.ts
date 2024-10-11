@@ -2,6 +2,7 @@ import { useSignUp, useSignIn } from "@clerk/clerk-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { RegisterType, SignUpType } from "../types/types";
 import { useNavigate } from "@tanstack/react-router";
+import toast from "react-hot-toast";
 
 export const useAuthUser = (state: RegisterType) => {
   const { isLoaded, signUp } = useSignUp();
@@ -25,14 +26,15 @@ export const useAuthUser = (state: RegisterType) => {
           password: formData.password,
         });
         if (signInAttempt?.status === "complete") {
-          setActive &&
-            (await setActive({ session: signInAttempt.createdSessionId }));
+          if (!setActive) return;
+          await setActive({ session: signInAttempt.createdSessionId });
           navigate({ to: "/dashboard" });
         } else {
           console.error(JSON.stringify(signInAttempt, null, 2));
         }
       }
     } catch (error) {
+      toast.error(JSON.parse(JSON.stringify(error, null, 2)).errors[0].message);
       console.log(JSON.parse(JSON.stringify(error, null, 2)).errors[0].message);
     }
   };

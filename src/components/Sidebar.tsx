@@ -22,35 +22,35 @@ function Sidebar({
       className={`min-w-[90%] lg:min-w-[280px] bg-white z-20 fixed top-0 lg:static ${isOpen ? "left-0" : "-left-full"} border-r border-gray-100 h-screen flex flex-col p-6 duration-300 ease-in-out`}
     >
       <TfiClose
-        className="lg:hidden absolute top-5 right-5"
+        className="absolute lg:hidden top-5 right-5"
         onClick={() => setIsOpen(false)}
       />
       <Icon />
       <Link
-        className="transition mb-1 mt-10 rounded p-3 text-ungu text-sm bg-ungupudar flex items-center font-semibold"
-        to=""
+        className="flex items-center p-3 mt-10 mb-1 text-sm font-semibold transition rounded-md text-hitampudar hover:bg-ungupudar hover:text-ungu"
+        to="/dashboard"
         onClick={() => setIsOpen(false)}
       >
-        <GrAppsRounded className="mr-3 text-xl text-ungu" />
+        <GrAppsRounded className="mr-3 text-xl" />
         Dashboard
       </Link>
 
-      <div className="border-t border-gray-100 mt-5 pt-5">
+      <div className="pt-5 mt-5 border-t border-gray-100">
         <Link
-          to=""
-          className="relative transition mb-1 rounded p-3 text-sm text-hitampudar flex items-center font-semibold"
+          to="/orders"
+          className="relative flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md text-hitampudar hover:bg-ungupudar hover:text-ungu"
           onClick={() => setIsOpen(false)}
         >
-          <div className="px-3  rounded-full top-1/2 -translate-y-1/2 right-3 absolute flex items-center justify-center">
-            <p className="text-ungu text-xs">24</p>
+          <div className="absolute flex items-center justify-center px-3 -translate-y-1/2 rounded-full top-1/2 right-3">
+            <p className="text-xs text-ungu">24</p>
           </div>
           <BsCart2 className="mr-3 text-xl" />
           Orders
         </Link>
 
         <Link
-          to=""
-          className="transition mb-1 rounded-md p-3 text-sm text-hitampudar flex items-center font-semibold"
+          to="/products"
+          className="flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md text-hitampudar hover:bg-ungupudar hover:text-ungu"
           onClick={() => setIsOpen(false)}
         >
           <AiOutlineProduct className="mr-3 text-xl" />
@@ -58,8 +58,8 @@ function Sidebar({
         </Link>
 
         <Link
-          to=""
-          className="transition mb-1 rounded-md p-3 text-sm text-hitampudar flex items-center font-semibold"
+          to="/analytics"
+          className="flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md text-hitampudar hover:bg-ungupudar hover:text-ungu"
           onClick={() => setIsOpen(false)}
         >
           <IoAnalytics className="mr-3 text-xl" />
@@ -67,10 +67,10 @@ function Sidebar({
         </Link>
       </div>
 
-      <div className="border-t border-gray-100 mt-5 pt-5">
+      <div className="pt-5 mt-5 border-t border-gray-100">
         <Link
-          to=""
-          className="transition mb-1  rounded-md p-3 text-sm text-hitampudar flex items-center font-semibold cursor-pointer"
+          to="/stores"
+          className="flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md cursor-pointer text-hitampudar hover:bg-ungupudar hover:text-ungu"
           onClick={() => setIsOpen(false)}
         >
           <AiOutlineShop className="mr-3 text-xl" />
@@ -78,7 +78,7 @@ function Sidebar({
         </Link>
 
         <div
-          className="transition mb-1  rounded-md p-3 text-sm text-hitampudar flex items-center font-semibold cursor-pointer"
+          className="flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md cursor-pointer text-hitampudar hover:bg-ungupudar hover:text-ungu"
           onClick={() => {
             signOut({
               redirectUrl: "/login",
@@ -92,10 +92,10 @@ function Sidebar({
 
       <div className="absolute left-5 bottom-20  text-sm p-7 rounded-2xl border border-gray-200 w-[240px] mx-auto">
         <p className="text-hitampudar">
-          Pakai domain sendiri, jadi lebih keren!
+          Pakai domain sendiri biar lebih keren!
         </p>
-        <button className="bg-ungu text-white text-sm w-full mt-3 py-2">
-          Beli domain
+        <button className="w-full py-2 mt-3 text-sm text-white bg-ungu">
+          Upgrade Pro
         </button>
       </div>
     </div>

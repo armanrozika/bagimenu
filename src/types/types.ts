@@ -11,3 +11,9 @@ export enum RegisterType {
   Login,
   Signup,
 }
+
+export type StoreCreateType = {
+  name: string;
+  url: string;
+  whatsapp: string;
+};

@@ -10,4 +10,10 @@ export default defineSchema({
     email: v.string(),
     tokenIdentifier: v.string(),
   }).index("by_token", ["tokenIdentifier"]),
+  stores: defineTable({
+    name: v.string(),
+    url: v.string(),
+    whatsapp: v.string(),
+    owner_identifier: v.string(),
+  }).index("by_token", ["owner_identifier"]),
 });

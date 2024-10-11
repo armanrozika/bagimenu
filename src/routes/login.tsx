@@ -1,12 +1,11 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
 import { useState } from "react";
 import Icon from "../components/Icon";
 import { FcGoogle } from "react-icons/fc";
 import { useAuthUser } from "../mutations/useAuthUser";
 import { RegisterType } from "../types/types";
-import { useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
-import { SpinnerPurple } from "../assets";
+import { SpinnerPurple, SpinnerWhite } from "../assets";
+import { useUser } from "@clerk/clerk-react";
 
 export const Route = createFileRoute("/login")({
   component: Login,
@@ -17,25 +16,25 @@ function Login() {
     RegisterType.Login
   );
   const { registerForm, submitData } = useAuthUser(registerState);
-  const user = useQuery(api.users.get);
-  const navigate = useNavigate();
+  const { isSignedIn, isLoaded } = useUser();
 
-  if (user === undefined) {
+  if (!isLoaded) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <img src={SpinnerPurple} className="w-[30px]" />
       </div>
     );
   }
-  if (user) {
-    navigate({ to: "/dashboard" });
+
+  if (isSignedIn) {
+    return <Navigate to={"/dashboard"} />;
   }
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <form
         onSubmit={registerForm.handleSubmit(submitData)}
-        className="p-10 mx-auto my-0 border-2 border-gray-100 rounded-2xl"
+        className="block p-10 mx-auto my-0 border-2 border-gray-100 rounded-2xl"
       >
         <Icon />
         <h1 className="mb-10 text-xl font-semibold text-center text-ungu text-opacity-80">
@@ -61,9 +60,19 @@ function Login() {
         </div>
         <button
           type="submit"
-          className="w-full py-3 mt-5 font-semibold text-white transition rounded bg-ungu hover:bg-opacity-95"
+          className="w-full h-[45px] mt-5 font-semibold text-sm text-white transition rounded bg-ungu hover:bg-opacity-95 block"
         >
-          {registerState === RegisterType.Login ? "Masuk" : "Daftar"}
+          {registerState === RegisterType.Login ? (
+            registerForm.formState.isSubmitting ? (
+              <img src={SpinnerWhite} className="w-[25px]  mx-auto" />
+            ) : (
+              "Masuk"
+            )
+          ) : registerForm.formState.isSubmitting ? (
+            <img src={SpinnerWhite} className="w-[25px] mx-auto" />
+          ) : (
+            "Daftar"
+          )}
         </button>
 
         {registerState === RegisterType.Login && (
@@ -71,6 +80,11 @@ function Login() {
             to=""
             target="_blank"
             className="inline-block mt-3 text-right underline text-ungu"
+            activeProps={{
+              style: {
+                backgroundColor: "#ffffff",
+              },
+            }}
           >
             Lupa password
           </Link>
