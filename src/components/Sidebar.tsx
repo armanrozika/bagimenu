@@ -2,12 +2,11 @@ import { Link } from "@tanstack/react-router";
 import { GrAppsRounded } from "react-icons/gr";
 import { AiOutlineProduct, AiOutlineShop } from "react-icons/ai";
 import { LiaSignOutAltSolid } from "react-icons/lia";
-import { useQuery } from "convex/react";
 import { TfiClose } from "react-icons/tfi";
 import { BsCart2 } from "react-icons/bs";
 import { IoAnalytics } from "react-icons/io5";
 import Icon from "./Icon";
-import { api } from "../../convex/_generated/api";
+import { useClerk } from "@clerk/clerk-react";
 
 function Sidebar({
   isOpen,
@@ -16,8 +15,7 @@ function Sidebar({
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const tasks = useQuery(api.tasks.get);
-  console.log(tasks);
+  const { signOut } = useClerk();
 
   return (
     <div
@@ -79,7 +77,14 @@ function Sidebar({
           <p>Toko</p>
         </Link>
 
-        <div className="transition mb-1  rounded-md p-3 text-sm text-hitampudar flex items-center font-semibold cursor-pointer">
+        <div
+          className="transition mb-1  rounded-md p-3 text-sm text-hitampudar flex items-center font-semibold cursor-pointer"
+          onClick={() => {
+            signOut({
+              redirectUrl: "/login",
+            });
+          }}
+        >
           <LiaSignOutAltSolid className="mr-3 text-xl" />
           <p>Logout</p>
         </div>

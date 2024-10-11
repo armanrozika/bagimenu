@@ -8,7 +8,7 @@ export const useAuthUser = (state: RegisterType) => {
   const { signIn, setActive } = useSignIn();
   const navigate = useNavigate();
 
-  const signUpForm = useForm<SignUpType>();
+  const registerForm = useForm<SignUpType>();
   const submitData: SubmitHandler<SignUpType> = async (formData) => {
     if (!isLoaded) return;
     try {
@@ -17,7 +17,6 @@ export const useAuthUser = (state: RegisterType) => {
         await signUp.prepareEmailAddressVerification({
           strategy: "email_code",
         });
-        //navigate to verify email route
         navigate({ to: "/verify-email" });
       }
       if (state === RegisterType.Login) {
@@ -28,7 +27,7 @@ export const useAuthUser = (state: RegisterType) => {
         if (signInAttempt?.status === "complete") {
           setActive &&
             (await setActive({ session: signInAttempt.createdSessionId }));
-          //navigate to dashboard route
+          navigate({ to: "/dashboard" });
         } else {
           console.error(JSON.stringify(signInAttempt, null, 2));
         }
@@ -38,5 +37,5 @@ export const useAuthUser = (state: RegisterType) => {
     }
   };
 
-  return { signUpForm, submitData };
+  return { registerForm, submitData };
 };

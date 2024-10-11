@@ -1,9 +1,12 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import Icon from "../components/Icon";
 import { FcGoogle } from "react-icons/fc";
 import { useAuthUser } from "../mutations/useAuthUser";
 import { RegisterType } from "../types/types";
+import { useQuery } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import { SpinnerPurple } from "../assets";
 
 export const Route = createFileRoute("/login")({
   component: Login,
@@ -13,21 +16,34 @@ function Login() {
   const [registerState, setRegisterState] = useState<RegisterType>(
     RegisterType.Login
   );
-  const { signUpForm, submitData } = useAuthUser(registerState);
+  const { registerForm, submitData } = useAuthUser(registerState);
+  const user = useQuery(api.users.get);
+  const navigate = useNavigate();
+
+  if (user === undefined) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <img src={SpinnerPurple} className="w-[30px]" />
+      </div>
+    );
+  }
+  if (user) {
+    navigate({ to: "/dashboard" });
+  }
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
+    <div className="flex flex-col items-center justify-center h-screen">
       <form
-        onSubmit={signUpForm.handleSubmit(submitData)}
-        className="mx-auto my-0 border-2 border-gray-100 p-10 rounded-2xl"
+        onSubmit={registerForm.handleSubmit(submitData)}
+        className="p-10 mx-auto my-0 border-2 border-gray-100 rounded-2xl"
       >
         <Icon />
-        <h1 className="text-center mb-10 text-xl text-ungu text-opacity-80 font-semibold">
+        <h1 className="mb-10 text-xl font-semibold text-center text-ungu text-opacity-80">
           BagiMenu
         </h1>
         <div className="relative mb-3">
           <input
-            {...signUpForm.register("emailAddress")}
+            {...registerForm.register("emailAddress")}
             className="border border-gray-200 rounded-lg p-4 w-[300px]"
             type="text"
             placeholder="Email"
@@ -36,8 +52,8 @@ function Login() {
         </div>
         <div className="relative">
           <input
-            {...signUpForm.register("password")}
-            className="border w-full border-gray-200 rounded-lg p-4"
+            {...registerForm.register("password")}
+            className="w-full p-4 border border-gray-200 rounded-lg"
             type="password"
             placeholder="Password"
             required
@@ -45,7 +61,7 @@ function Login() {
         </div>
         <button
           type="submit"
-          className="bg-ungu mt-5 w-full rounded py-3 font-semibold text-white hover:bg-opacity-95 transition"
+          className="w-full py-3 mt-5 font-semibold text-white transition rounded bg-ungu hover:bg-opacity-95"
         >
           {registerState === RegisterType.Login ? "Masuk" : "Daftar"}
         </button>
@@ -54,16 +70,16 @@ function Login() {
           <Link
             to=""
             target="_blank"
-            className="text-ungu text-right inline-block mt-3 underline"
+            className="inline-block mt-3 text-right underline text-ungu"
           >
             Lupa password
           </Link>
         )}
         <div className="text-center mt-7">
-          <p className="text-hitampudar text-sm">Masuk dengan Google</p>
+          <p className="text-sm text-hitampudar">Masuk dengan Google</p>
           <button
             type="button"
-            className="mt-3 rounded-md hover:bg-gray-100 transition border border-gray-300 px-10 py-2"
+            className="px-10 py-2 mt-3 transition border border-gray-300 rounded-md hover:bg-gray-100"
           >
             <FcGoogle className="mx-auto text-2xl" />
           </button>
@@ -71,10 +87,10 @@ function Login() {
       </form>
       {registerState === RegisterType.Login && (
         <>
-          <div className="flex justify-end items-center mt-5">
+          <div className="flex items-center justify-end mt-5">
             <p className="mr-2 text-hitampudar">Belum punya akun?</p>
             <p
-              className="text-ungu cursor-pointer"
+              className="cursor-pointer text-ungu"
               onClick={() => setRegisterState(RegisterType.Signup)}
             >
               Daftar
@@ -83,10 +99,10 @@ function Login() {
         </>
       )}
       {registerState === RegisterType.Signup && (
-        <div className="flex justify-center items-center mt-10">
+        <div className="flex items-center justify-center mt-10">
           <p className="mr-2 text-hitampudar">Sudah punya akun?</p>
           <p
-            className="text-ungu cursor-pointer"
+            className="cursor-pointer text-ungu"
             onClick={() => setRegisterState(RegisterType.Login)}
           >
             Masuk

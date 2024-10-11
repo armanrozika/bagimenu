@@ -1,15 +1,27 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ConvexQueryClient } from "@convex-dev/react-query";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { ConvexReactClient } from "convex/react";
 import { ClerkProvider, useAuth } from "@clerk/clerk-react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { routeTree } from "./routeTree.gen";
-
 import "./index.css";
 
-const queryClient = new QueryClient();
+const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL);
+const convexQueryClient = new ConvexQueryClient(convex);
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      queryKeyHashFn: convexQueryClient.hashFn(),
+      queryFn: convexQueryClient.queryFn(),
+    },
+  },
+});
+
+convexQueryClient.connect(queryClient);
+
 const router = createRouter({
   routeTree,
   context: { queryClient },
@@ -20,8 +32,6 @@ declare module "@tanstack/react-router" {
     router: typeof router;
   }
 }
-
-const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 
 function App() {
   return <RouterProvider router={router} />;
