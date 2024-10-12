@@ -29,23 +29,34 @@ function Toko() {
       return (
         <div
           key={store._id}
-          className="grid items-center grid-cols-12 p-5 mt-5 text-sm border border-gray-200 rounded-2xl"
+          className="grid items-center grid-cols-12 mt-5 text-sm transition border border-gray-200 p-7 rounded-2xl hover:bg-gray-50"
         >
           <div className="flex items-center col-span-6">
-            <IoStorefrontOutline className="mr-3 text-4xl text-indigo-400" />
+            <IoStorefrontOutline className="mr-5 text-4xl text-indigo-400" />
             <div>
               <h1 className="font-semibold text-hitampudar">{store.name}</h1>
-              <p className="text-gray-400 ">{store.url}</p>
+              <Link
+                to="/stores/gsgsgs"
+                target="_blank"
+                className="text-indigo-400"
+              >
+                bagimenu.com/{store.url}
+              </Link>
             </div>
           </div>
           <div className="col-span-3">
             <div className="flex items-center my-2">
-              <MdOutlineWhatsapp className="mr-2 text-2xl text-green-600" />
-              <p>{store.whatsapp}</p>
+              <MdOutlineWhatsapp className="mr-2 text-2xl text-green-500" />
+              <p className="text-hitampudar">{store.whatsapp}</p>
             </div>
           </div>
           <div className="flex justify-end col-span-3">
-            <p className="underline text-ungu">Edit</p>
+            <Link
+              to={`/stores/edit/${store._id}`}
+              className="underline text-ungu"
+            >
+              Edit
+            </Link>
           </div>
         </div>
       );

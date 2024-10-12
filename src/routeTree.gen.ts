@@ -20,6 +20,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as PrivateStoresIndexImport } from './routes/_private.stores/index'
 import { Route as PrivateDashboardIndexImport } from './routes/_private.dashboard/index'
 import { Route as PrivateStoresCreateImport } from './routes/_private.stores/create'
+import { Route as PrivateStoresEditIdImport } from './routes/_private.stores/edit.$id'
 
 // Create/Update Routes
 
@@ -65,6 +66,11 @@ const PrivateDashboardIndexRoute = PrivateDashboardIndexImport.update({
 
 const PrivateStoresCreateRoute = PrivateStoresCreateImport.update({
   path: '/stores/create',
+  getParentRoute: () => PrivateRoute,
+} as any)
+
+const PrivateStoresEditIdRoute = PrivateStoresEditIdImport.update({
+  path: '/stores/edit/$id',
   getParentRoute: () => PrivateRoute,
 } as any)
 
@@ -135,6 +141,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateStoresIndexImport
       parentRoute: typeof PrivateImport
     }
+    '/_private/stores/edit/$id': {
+      id: '/_private/stores/edit/$id'
+      path: '/stores/edit/$id'
+      fullPath: '/stores/edit/$id'
+      preLoaderRoute: typeof PrivateStoresEditIdImport
+      parentRoute: typeof PrivateImport
+    }
   }
 }
 
@@ -144,12 +157,14 @@ interface PrivateRouteChildren {
   PrivateStoresCreateRoute: typeof PrivateStoresCreateRoute
   PrivateDashboardIndexRoute: typeof PrivateDashboardIndexRoute
   PrivateStoresIndexRoute: typeof PrivateStoresIndexRoute
+  PrivateStoresEditIdRoute: typeof PrivateStoresEditIdRoute
 }
 
 const PrivateRouteChildren: PrivateRouteChildren = {
   PrivateStoresCreateRoute: PrivateStoresCreateRoute,
   PrivateDashboardIndexRoute: PrivateDashboardIndexRoute,
   PrivateStoresIndexRoute: PrivateStoresIndexRoute,
+  PrivateStoresEditIdRoute: PrivateStoresEditIdRoute,
 }
 
 const PrivateRouteWithChildren =
@@ -165,6 +180,7 @@ export interface FileRoutesByFullPath {
   '/stores/create': typeof PrivateStoresCreateRoute
   '/dashboard': typeof PrivateDashboardIndexRoute
   '/stores': typeof PrivateStoresIndexRoute
+  '/stores/edit/$id': typeof PrivateStoresEditIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -177,6 +193,7 @@ export interface FileRoutesByTo {
   '/stores/create': typeof PrivateStoresCreateRoute
   '/dashboard': typeof PrivateDashboardIndexRoute
   '/stores': typeof PrivateStoresIndexRoute
+  '/stores/edit/$id': typeof PrivateStoresEditIdRoute
 }
 
 export interface FileRoutesById {
@@ -190,6 +207,7 @@ export interface FileRoutesById {
   '/_private/stores/create': typeof PrivateStoresCreateRoute
   '/_private/dashboard/': typeof PrivateDashboardIndexRoute
   '/_private/stores/': typeof PrivateStoresIndexRoute
+  '/_private/stores/edit/$id': typeof PrivateStoresEditIdRoute
 }
 
 export interface FileRouteTypes {
@@ -204,6 +222,7 @@ export interface FileRouteTypes {
     | '/stores/create'
     | '/dashboard'
     | '/stores'
+    | '/stores/edit/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -215,6 +234,7 @@ export interface FileRouteTypes {
     | '/stores/create'
     | '/dashboard'
     | '/stores'
+    | '/stores/edit/$id'
   id:
     | '__root__'
     | '/'
@@ -226,6 +246,7 @@ export interface FileRouteTypes {
     | '/_private/stores/create'
     | '/_private/dashboard/'
     | '/_private/stores/'
+    | '/_private/stores/edit/$id'
   fileRoutesById: FileRoutesById
 }
 
@@ -275,7 +296,8 @@ export const routeTree = rootRoute
       "children": [
         "/_private/stores/create",
         "/_private/dashboard/",
-        "/_private/stores/"
+        "/_private/stores/",
+        "/_private/stores/edit/$id"
       ]
     },
     "/login": {
@@ -300,6 +322,10 @@ export const routeTree = rootRoute
     },
     "/_private/stores/": {
       "filePath": "_private.stores/index.tsx",
+      "parent": "/_private"
+    },
+    "/_private/stores/edit/$id": {
+      "filePath": "_private.stores/edit.$id.tsx",
       "parent": "/_private"
     }
   }

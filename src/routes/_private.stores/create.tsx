@@ -12,28 +12,36 @@ function CreateToko() {
     <div>
       <BackTitle backTo="/stores" title="Tambah Toko" />
       <form onSubmit={storeForm.handleSubmit(submitCreateForm)}>
-        <div className="grid grid-cols-3 gap-5">
-          <input
-            {...storeForm.register("name")}
-            required
-            type="text"
-            placeholder="Nama Toko"
-            className="p-3 rounded-lg bg-gray-50"
-          />
-          <input
-            {...storeForm.register("url")}
-            required
-            type="text"
-            placeholder="URL Toko"
-            className="p-3 rounded-lg bg-gray-50"
-          />
-          <input
-            {...storeForm.register("whatsapp")}
-            required
-            type="text"
-            placeholder="Nomor Whatsapp"
-            className="p-3 rounded-lg bg-gray-50"
-          />
+        <div className="grid grid-cols-2 gap-7">
+          <div className="flex items-center w-full mr-5 border border-gray-200 rounded-lg bg-indigo-50">
+            <p className="px-4 text-hitampudar">https://bagimenu.com/</p>
+            <input
+              {...storeForm.register("url")}
+              required
+              type="text"
+              placeholder="Url Toko"
+              className="w-full p-3 rounded-r-lg "
+            />
+          </div>
+          <div>
+            <input
+              {...storeForm.register("name")}
+              required
+              type="text"
+              placeholder="Nama Toko"
+              className="w-full p-3 border border-gray-200 rounded-lg"
+            />
+          </div>
+
+          <div>
+            <input
+              {...storeForm.register("whatsapp")}
+              required
+              type="text"
+              placeholder="Nomor Whatsapp"
+              className="w-full p-3 border border-gray-200 rounded-lg "
+            />
+          </div>
         </div>
         <div className="flex justify-end mt-4">
           <button

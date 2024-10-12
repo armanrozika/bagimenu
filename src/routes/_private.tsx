@@ -30,7 +30,7 @@ function PrivateWrapper() {
           <CiMenuFries />
         </div>
         <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
-        <div className="w-full p-5 lg:p-16">
+        <div className="w-full p-5 lg:p-16 max-w-[1200px] mx-auto">
           <div className="bg-white p-5 lg:p-10 rounded-3xl mt-[50px] lg:mt-0">
             <Outlet />
           </div>
