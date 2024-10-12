@@ -21,6 +21,7 @@ export const add = mutation({
     const userId = await ctx.db.insert("users", {
       tokenIdentifier: identity.tokenIdentifier,
       email: identity.email!,
+      plan: "basic",
     });
 
     return userId;

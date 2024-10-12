@@ -14,11 +14,29 @@ export const useAuthUser = (state: RegisterType) => {
     if (!isLoaded) return;
     try {
       if (state === RegisterType.Signup) {
-        await signUp?.create(formData);
-        await signUp.prepareEmailAddressVerification({
-          strategy: "email_code",
-        });
-        navigate({ to: "/verify-email" });
+        if (!setActive) return;
+        //user have OAuth, but signup using same email as OAuth
+        const userNeedsToBeCreated =
+          signIn?.firstFactorVerification.status === "transferable";
+        if (userNeedsToBeCreated) {
+          const res = await signUp.create({
+            transfer: true,
+          });
+
+          if (res.status === "complete") {
+            await setActive({
+              session: res.createdSessionId,
+            });
+            navigate({ to: "/dashboard" });
+          }
+        } else {
+          //if no OAuth, then proceed signup as per usual
+          await signUp?.create(formData);
+          await signUp.prepareEmailAddressVerification({
+            strategy: "email_code",
+          });
+          navigate({ to: "/verify-email" });
+        }
       }
       if (state === RegisterType.Login) {
         const signInAttempt = await signIn?.create({

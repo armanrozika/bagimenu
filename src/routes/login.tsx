@@ -6,6 +6,7 @@ import { useAuthUser } from "../mutations/useAuthUser";
 import { RegisterType } from "../types/types";
 import { SpinnerPurple, SpinnerWhite } from "../assets";
 import { useUser } from "@clerk/clerk-react";
+import { useGoogleAuth } from "../mutations/useGoogleAuth";
 
 export const Route = createFileRoute("/login")({
   component: Login,
@@ -15,6 +16,8 @@ function Login() {
   const [registerState, setRegisterState] = useState<RegisterType>(
     RegisterType.Login
   );
+  const { handleSigninGoogle } = useGoogleAuth();
+
   const { registerForm, submitData } = useAuthUser(registerState);
   const { isSignedIn, isLoaded } = useUser();
 
@@ -94,6 +97,9 @@ function Login() {
           <button
             type="button"
             className="px-10 py-2 mt-3 transition border border-gray-300 rounded-md hover:bg-gray-100"
+            onClick={() => {
+              handleSigninGoogle("oauth_google");
+            }}
           >
             <FcGoogle className="mx-auto text-2xl" />
           </button>

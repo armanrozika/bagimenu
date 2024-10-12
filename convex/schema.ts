@@ -9,6 +9,7 @@ export default defineSchema({
   users: defineTable({
     email: v.string(),
     tokenIdentifier: v.string(),
+    plan: v.string(),
   }).index("by_token", ["tokenIdentifier"]),
   stores: defineTable({
     name: v.string(),

@@ -12,6 +12,8 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as VerifyEmailImport } from './routes/verify-email'
+import { Route as SsoCallbackImport } from './routes/sso-callback'
+import { Route as SsoCallbaccImport } from './routes/sso-callbacc'
 import { Route as LoginImport } from './routes/login'
 import { Route as PrivateImport } from './routes/_private'
 import { Route as IndexImport } from './routes/index'
@@ -23,6 +25,16 @@ import { Route as PrivateStoresCreateImport } from './routes/_private.stores/cre
 
 const VerifyEmailRoute = VerifyEmailImport.update({
   path: '/verify-email',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SsoCallbackRoute = SsoCallbackImport.update({
+  path: '/sso-callback',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SsoCallbaccRoute = SsoCallbaccImport.update({
+  path: '/sso-callbacc',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -81,6 +93,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
+    '/sso-callbacc': {
+      id: '/sso-callbacc'
+      path: '/sso-callbacc'
+      fullPath: '/sso-callbacc'
+      preLoaderRoute: typeof SsoCallbaccImport
+      parentRoute: typeof rootRoute
+    }
+    '/sso-callback': {
+      id: '/sso-callback'
+      path: '/sso-callback'
+      fullPath: '/sso-callback'
+      preLoaderRoute: typeof SsoCallbackImport
+      parentRoute: typeof rootRoute
+    }
     '/verify-email': {
       id: '/verify-email'
       path: '/verify-email'
@@ -133,6 +159,8 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof PrivateRouteWithChildren
   '/login': typeof LoginRoute
+  '/sso-callbacc': typeof SsoCallbaccRoute
+  '/sso-callback': typeof SsoCallbackRoute
   '/verify-email': typeof VerifyEmailRoute
   '/stores/create': typeof PrivateStoresCreateRoute
   '/dashboard': typeof PrivateDashboardIndexRoute
@@ -143,6 +171,8 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof PrivateRouteWithChildren
   '/login': typeof LoginRoute
+  '/sso-callbacc': typeof SsoCallbaccRoute
+  '/sso-callback': typeof SsoCallbackRoute
   '/verify-email': typeof VerifyEmailRoute
   '/stores/create': typeof PrivateStoresCreateRoute
   '/dashboard': typeof PrivateDashboardIndexRoute
@@ -154,6 +184,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_private': typeof PrivateRouteWithChildren
   '/login': typeof LoginRoute
+  '/sso-callbacc': typeof SsoCallbaccRoute
+  '/sso-callback': typeof SsoCallbackRoute
   '/verify-email': typeof VerifyEmailRoute
   '/_private/stores/create': typeof PrivateStoresCreateRoute
   '/_private/dashboard/': typeof PrivateDashboardIndexRoute
@@ -166,6 +198,8 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/login'
+    | '/sso-callbacc'
+    | '/sso-callback'
     | '/verify-email'
     | '/stores/create'
     | '/dashboard'
@@ -175,6 +209,8 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/login'
+    | '/sso-callbacc'
+    | '/sso-callback'
     | '/verify-email'
     | '/stores/create'
     | '/dashboard'
@@ -184,6 +220,8 @@ export interface FileRouteTypes {
     | '/'
     | '/_private'
     | '/login'
+    | '/sso-callbacc'
+    | '/sso-callback'
     | '/verify-email'
     | '/_private/stores/create'
     | '/_private/dashboard/'
@@ -195,6 +233,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PrivateRoute: typeof PrivateRouteWithChildren
   LoginRoute: typeof LoginRoute
+  SsoCallbaccRoute: typeof SsoCallbaccRoute
+  SsoCallbackRoute: typeof SsoCallbackRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
 }
 
@@ -202,6 +242,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PrivateRoute: PrivateRouteWithChildren,
   LoginRoute: LoginRoute,
+  SsoCallbaccRoute: SsoCallbaccRoute,
+  SsoCallbackRoute: SsoCallbackRoute,
   VerifyEmailRoute: VerifyEmailRoute,
 }
 
@@ -220,6 +262,8 @@ export const routeTree = rootRoute
         "/",
         "/_private",
         "/login",
+        "/sso-callbacc",
+        "/sso-callback",
         "/verify-email"
       ]
     },
@@ -236,6 +280,12 @@ export const routeTree = rootRoute
     },
     "/login": {
       "filePath": "login.tsx"
+    },
+    "/sso-callbacc": {
+      "filePath": "sso-callbacc.tsx"
+    },
+    "/sso-callback": {
+      "filePath": "sso-callback.tsx"
     },
     "/verify-email": {
       "filePath": "verify-email.tsx"

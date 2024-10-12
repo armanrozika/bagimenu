@@ -42,8 +42,8 @@ function VerifyEmail() {
   });
 
   return (
-    <div>
-      <p>
+    <div className="mt-20 text-center">
+      <p className="mb-7">
         {addUser.isPending
           ? "Menunggu..."
           : "Masukkan code yang anda terima di email anda"}
@@ -56,9 +56,16 @@ function VerifyEmail() {
       >
         <input
           type="text"
-          placeholder="enter the code"
+          placeholder="Masukkan kode"
           onChange={(e) => setCode(e.target.value)}
+          className="p-3 rounded-lg bg-gray-50"
         />
+        <button
+          type="submit"
+          className="px-5 py-2 ml-2 text-sm font-semibold text-white rounded-lg bg-ungu"
+        >
+          Kirim
+        </button>
       </form>
     </div>
   );
