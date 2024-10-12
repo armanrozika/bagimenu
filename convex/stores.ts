@@ -6,15 +6,24 @@ export const add = mutation({
   args: { name: v.string(), url: v.string(), whatsapp: v.string() },
   handler: async (ctx, args) => {
     const identity = await authorizeUser(ctx, "No Auth: add stores");
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => {
+        return q.eq("tokenIdentifier", identity.tokenIdentifier);
+      })
+      .unique();
 
-    const stores = await ctx.db.insert("stores", {
+    const store = await ctx.db.insert("stores", {
       name: args.name,
       url: args.url,
       whatsapp: args.whatsapp,
       owner_identifier: identity?.tokenIdentifier,
     });
+    if (user) {
+      await ctx.db.patch(user._id, { default_store: store });
+    }
 
-    return stores;
+    return store;
   },
 });
 

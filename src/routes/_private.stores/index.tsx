@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { convexQuery } from "@convex-dev/react-query";
 import { IoStorefrontOutline } from "react-icons/io5";
 import { FiEdit, FiPlusSquare } from "react-icons/fi";
-import { LuTrash } from "react-icons/lu";
+// import { LuTrash } from "react-icons/lu";
 
 export const Route = createFileRoute("/_private/stores/")({
   component: Toko,
@@ -25,7 +25,7 @@ function Toko() {
 
   const renderToko = () => {
     if (data.length < 1) {
-      return <NoData text="Belum Ada Toko" />;
+      return <NoData text="Buat Toko dengan Klik Tombol Tambah Toko" />;
     }
     return data.map((store) => {
       return (
@@ -86,13 +86,13 @@ function Toko() {
   };
 
   return (
-    <div>
+    <>
       <div className="flex items-center justify-between pb-3 mb-3 border-b border-gray-100">
         <h1 className="font-semibold text-hitampudar">Toko</h1>
         {renderAddStoreButton()}
       </div>
       {renderToko()}
       {renderProNotif()}
-    </div>
+    </>
   );
 }

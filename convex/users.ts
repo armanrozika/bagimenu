@@ -19,6 +19,7 @@ export const add = mutation({
       tokenIdentifier: identity.tokenIdentifier,
       email: identity.email!,
       plan: "basic",
+      default_store: null,
     });
 
     return userId;

@@ -8,10 +8,10 @@ export const useGoogleAuth = () => {
   const signInWith = (strategy: OAuthStrategy) => {
     return signIn?.authenticateWithRedirect({
       strategy,
-      redirectUrl: "/sso-callback",
+      redirectUrl: import.meta.env.VITE_REDIRECT,
       //redirect to diff url to register user to convex db
       //no idea how to read the session without doing this way
-      redirectUrlComplete: "/sso-callbacc",
+      redirectUrlComplete: import.meta.env.VITE_REDIRECT_AFTER,
     });
   };
 
@@ -23,7 +23,9 @@ export const useGoogleAuth = () => {
         "external_account_exists";
 
     if (userExistsButNeedsToSignIn) {
-      const res = await signIn?.create({ transfer: true });
+      const res = await signIn?.create({
+        transfer: true,
+      });
 
       if (res?.status === "complete" && setActive) {
         setActive({

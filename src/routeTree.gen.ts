@@ -18,8 +18,10 @@ import { Route as LoginImport } from './routes/login'
 import { Route as PrivateImport } from './routes/_private'
 import { Route as IndexImport } from './routes/index'
 import { Route as PrivateStoresIndexImport } from './routes/_private.stores/index'
+import { Route as PrivateProductsIndexImport } from './routes/_private.products/index'
 import { Route as PrivateDashboardIndexImport } from './routes/_private.dashboard/index'
 import { Route as PrivateStoresCreateImport } from './routes/_private.stores/create'
+import { Route as PrivateProductsCreateImport } from './routes/_private.products/create'
 import { Route as PrivateStoresEditIdImport } from './routes/_private.stores/edit.$id'
 
 // Create/Update Routes
@@ -59,6 +61,11 @@ const PrivateStoresIndexRoute = PrivateStoresIndexImport.update({
   getParentRoute: () => PrivateRoute,
 } as any)
 
+const PrivateProductsIndexRoute = PrivateProductsIndexImport.update({
+  path: '/products/',
+  getParentRoute: () => PrivateRoute,
+} as any)
+
 const PrivateDashboardIndexRoute = PrivateDashboardIndexImport.update({
   path: '/dashboard/',
   getParentRoute: () => PrivateRoute,
@@ -66,6 +73,11 @@ const PrivateDashboardIndexRoute = PrivateDashboardIndexImport.update({
 
 const PrivateStoresCreateRoute = PrivateStoresCreateImport.update({
   path: '/stores/create',
+  getParentRoute: () => PrivateRoute,
+} as any)
+
+const PrivateProductsCreateRoute = PrivateProductsCreateImport.update({
+  path: '/products/create',
   getParentRoute: () => PrivateRoute,
 } as any)
 
@@ -120,6 +132,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerifyEmailImport
       parentRoute: typeof rootRoute
     }
+    '/_private/products/create': {
+      id: '/_private/products/create'
+      path: '/products/create'
+      fullPath: '/products/create'
+      preLoaderRoute: typeof PrivateProductsCreateImport
+      parentRoute: typeof PrivateImport
+    }
     '/_private/stores/create': {
       id: '/_private/stores/create'
       path: '/stores/create'
@@ -132,6 +151,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof PrivateDashboardIndexImport
+      parentRoute: typeof PrivateImport
+    }
+    '/_private/products/': {
+      id: '/_private/products/'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof PrivateProductsIndexImport
       parentRoute: typeof PrivateImport
     }
     '/_private/stores/': {
@@ -154,15 +180,19 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface PrivateRouteChildren {
+  PrivateProductsCreateRoute: typeof PrivateProductsCreateRoute
   PrivateStoresCreateRoute: typeof PrivateStoresCreateRoute
   PrivateDashboardIndexRoute: typeof PrivateDashboardIndexRoute
+  PrivateProductsIndexRoute: typeof PrivateProductsIndexRoute
   PrivateStoresIndexRoute: typeof PrivateStoresIndexRoute
   PrivateStoresEditIdRoute: typeof PrivateStoresEditIdRoute
 }
 
 const PrivateRouteChildren: PrivateRouteChildren = {
+  PrivateProductsCreateRoute: PrivateProductsCreateRoute,
   PrivateStoresCreateRoute: PrivateStoresCreateRoute,
   PrivateDashboardIndexRoute: PrivateDashboardIndexRoute,
+  PrivateProductsIndexRoute: PrivateProductsIndexRoute,
   PrivateStoresIndexRoute: PrivateStoresIndexRoute,
   PrivateStoresEditIdRoute: PrivateStoresEditIdRoute,
 }
@@ -177,8 +207,10 @@ export interface FileRoutesByFullPath {
   '/sso-callbacc': typeof SsoCallbaccRoute
   '/sso-callback': typeof SsoCallbackRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/products/create': typeof PrivateProductsCreateRoute
   '/stores/create': typeof PrivateStoresCreateRoute
   '/dashboard': typeof PrivateDashboardIndexRoute
+  '/products': typeof PrivateProductsIndexRoute
   '/stores': typeof PrivateStoresIndexRoute
   '/stores/edit/$id': typeof PrivateStoresEditIdRoute
 }
@@ -190,8 +222,10 @@ export interface FileRoutesByTo {
   '/sso-callbacc': typeof SsoCallbaccRoute
   '/sso-callback': typeof SsoCallbackRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/products/create': typeof PrivateProductsCreateRoute
   '/stores/create': typeof PrivateStoresCreateRoute
   '/dashboard': typeof PrivateDashboardIndexRoute
+  '/products': typeof PrivateProductsIndexRoute
   '/stores': typeof PrivateStoresIndexRoute
   '/stores/edit/$id': typeof PrivateStoresEditIdRoute
 }
@@ -204,8 +238,10 @@ export interface FileRoutesById {
   '/sso-callbacc': typeof SsoCallbaccRoute
   '/sso-callback': typeof SsoCallbackRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/_private/products/create': typeof PrivateProductsCreateRoute
   '/_private/stores/create': typeof PrivateStoresCreateRoute
   '/_private/dashboard/': typeof PrivateDashboardIndexRoute
+  '/_private/products/': typeof PrivateProductsIndexRoute
   '/_private/stores/': typeof PrivateStoresIndexRoute
   '/_private/stores/edit/$id': typeof PrivateStoresEditIdRoute
 }
@@ -219,8 +255,10 @@ export interface FileRouteTypes {
     | '/sso-callbacc'
     | '/sso-callback'
     | '/verify-email'
+    | '/products/create'
     | '/stores/create'
     | '/dashboard'
+    | '/products'
     | '/stores'
     | '/stores/edit/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -231,8 +269,10 @@ export interface FileRouteTypes {
     | '/sso-callbacc'
     | '/sso-callback'
     | '/verify-email'
+    | '/products/create'
     | '/stores/create'
     | '/dashboard'
+    | '/products'
     | '/stores'
     | '/stores/edit/$id'
   id:
@@ -243,8 +283,10 @@ export interface FileRouteTypes {
     | '/sso-callbacc'
     | '/sso-callback'
     | '/verify-email'
+    | '/_private/products/create'
     | '/_private/stores/create'
     | '/_private/dashboard/'
+    | '/_private/products/'
     | '/_private/stores/'
     | '/_private/stores/edit/$id'
   fileRoutesById: FileRoutesById
@@ -294,8 +336,10 @@ export const routeTree = rootRoute
     "/_private": {
       "filePath": "_private.tsx",
       "children": [
+        "/_private/products/create",
         "/_private/stores/create",
         "/_private/dashboard/",
+        "/_private/products/",
         "/_private/stores/",
         "/_private/stores/edit/$id"
       ]
@@ -312,12 +356,20 @@ export const routeTree = rootRoute
     "/verify-email": {
       "filePath": "verify-email.tsx"
     },
+    "/_private/products/create": {
+      "filePath": "_private.products/create.tsx",
+      "parent": "/_private"
+    },
     "/_private/stores/create": {
       "filePath": "_private.stores/create.tsx",
       "parent": "/_private"
     },
     "/_private/dashboard/": {
       "filePath": "_private.dashboard/index.tsx",
+      "parent": "/_private"
+    },
+    "/_private/products/": {
+      "filePath": "_private.products/index.tsx",
       "parent": "/_private"
     },
     "/_private/stores/": {

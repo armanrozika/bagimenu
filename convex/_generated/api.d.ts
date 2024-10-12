@@ -16,8 +16,8 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as helper_helper from "../helper/helper.js";
+import type * as products from "../products.js";
 import type * as stores from "../stores.js";
-import type * as tasks from "../tasks.js";
 import type * as users from "../users.js";
 
 /**
@@ -30,8 +30,8 @@ import type * as users from "../users.js";
  */
 declare const fullApi: ApiFromModules<{
   "helper/helper": typeof helper_helper;
+  products: typeof products;
   stores: typeof stores;
-  tasks: typeof tasks;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

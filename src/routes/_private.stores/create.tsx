@@ -3,6 +3,7 @@ import BackTitle from "../../components/BackTitle";
 import { useStoreMutations } from "../../mutations/useStoresMutations";
 import { MutationType } from "../../types/types";
 import { Id } from "../../../convex/_generated/dataModel";
+import { SpinnerWhite } from "../../assets";
 
 export const Route = createFileRoute("/_private/stores/create")({
   component: CreateToko,
@@ -51,9 +52,13 @@ function CreateToko() {
         <div className="flex justify-end mt-4">
           <button
             type="submit"
-            className="px-5 py-2 text-sm font-semibold text-white transition rounded-lg bg-ungu hover:opacity-95"
+            className="px-5 w-[100px] py-2 text-sm font-semibold text-white transition rounded-lg bg-ungu hover:opacity-95"
           >
-            Simpan
+            {storeForm.formState.isSubmitting ? (
+              <img src={SpinnerWhite} className="w-[20px] mx-auto" />
+            ) : (
+              "Simpan"
+            )}
           </button>
         </div>
       </form>

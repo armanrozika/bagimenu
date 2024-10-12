@@ -1,9 +1,5 @@
 import { DataModel } from "../_generated/dataModel";
-import {
-  GenericDataModel,
-  GenericMutationCtx,
-  GenericQueryCtx,
-} from "convex/server";
+import { GenericMutationCtx, GenericQueryCtx } from "convex/server";
 
 export const authorizeUser = async (
   ctx: GenericMutationCtx<DataModel> | GenericQueryCtx<DataModel>,

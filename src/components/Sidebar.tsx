@@ -45,7 +45,7 @@ function Sidebar({
             <p className="text-xs text-ungu">24</p>
           </div>
           <BsCart2 className="mr-3 text-xl" />
-          Orders
+          Order
         </Link>
 
         <Link
@@ -54,7 +54,7 @@ function Sidebar({
           onClick={() => setIsOpen(false)}
         >
           <AiOutlineProduct className="mr-3 text-xl" />
-          Products
+          Produk
         </Link>
 
         <Link
