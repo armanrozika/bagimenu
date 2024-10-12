@@ -1,13 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 import BackTitle from "../../components/BackTitle";
 import { useStoreMutations } from "../../mutations/useStoresMutations";
+import { MutationType } from "../../types/types";
+import { Id } from "../../../convex/_generated/dataModel";
 
 export const Route = createFileRoute("/_private/stores/create")({
   component: CreateToko,
 });
 
 function CreateToko() {
-  const { storeForm, submitCreateForm } = useStoreMutations();
+  const { storeForm, submitCreateForm } = useStoreMutations(
+    MutationType.Create,
+    "_" as Id<"stores">
+  );
   return (
     <div>
       <BackTitle backTo="/stores" title="Tambah Toko" />
