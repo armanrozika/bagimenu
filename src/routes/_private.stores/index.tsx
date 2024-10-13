@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { MdOutlineWhatsapp } from "react-icons/md";
+import { MdOutlineContentCopy, MdOutlineWhatsapp } from "react-icons/md";
 import NoData from "../../components/NoData";
 import { api } from "../../../convex/_generated/api";
 import { useQuery } from "@tanstack/react-query";
@@ -7,7 +7,7 @@ import { convexQuery } from "@convex-dev/react-query";
 import { IoStorefrontOutline } from "react-icons/io5";
 import { FiEdit, FiPlusSquare } from "react-icons/fi";
 import LoadingLine from "../../components/LoadingLine";
-// import { LuTrash } from "react-icons/lu";
+import toast from "react-hot-toast";
 
 export const Route = createFileRoute("/_private/stores/")({
   component: Toko,
@@ -35,9 +35,24 @@ function Toko() {
             <IoStorefrontOutline className="mr-5 text-4xl text-indigo-400" />
             <div>
               <h1 className="font-semibold text-hitampudar">{store.name}</h1>
-              <Link to="/stores" target="_blank" className="text-indigo-400">
-                bagimenu.com/{store.url}
-              </Link>
+              <div className="flex items-center">
+                <Link
+                  to={`/store/${store.url}`}
+                  target="_blank"
+                  className="text-indigo-500"
+                >
+                  bagimenu.com/{store.url}
+                </Link>
+                <MdOutlineContentCopy
+                  className="text-lg ml-3 text-gray-400 cursor-pointer"
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      `https://bagimenu.com/${store.url}`
+                    );
+                    toast.success("URL berhasil dicopy");
+                  }}
+                />
+              </div>
             </div>
           </div>
           <div className="col-span-3">
@@ -50,7 +65,6 @@ function Toko() {
             <Link to={`/stores/edit/${store._id}`} className=" text-ungu">
               <FiEdit className="text-lg" />
             </Link>
-            {/* <LuTrash className="text-gray-500 text-lg cursor-pointer ml-7" /> */}
           </div>
         </div>
       );

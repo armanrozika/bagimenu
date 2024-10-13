@@ -11,7 +11,7 @@ function BackTitle({ title, backTo }: { title: string; backTo: string }) {
         <IoChevronBack />
         <h1 className="ml-1">Back</h1>
       </Link>
-      <h1 className="ml-5 text-sm font-semibold text-main">{title}</h1>
+      <h1 className="ml-5 text-sm font-semibold text-hitampudar">{title}</h1>
     </div>
   );
 }

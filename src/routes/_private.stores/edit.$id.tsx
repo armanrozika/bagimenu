@@ -62,7 +62,7 @@ function EditStores() {
         </div>
         <div className="flex justify-end mt-4">
           <button
-            type="submit"
+            // type="submit"
             className="w-[100px] py-2 text-sm font-semibold text-white transition rounded-lg bg-ungu hover:opacity-95"
           >
             {storeForm.formState.isSubmitting ? (

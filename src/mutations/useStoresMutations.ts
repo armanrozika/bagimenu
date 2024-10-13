@@ -24,9 +24,8 @@ export const useStoreMutations = (
         await patch({ id: id, formData: formData });
       }
       navigate({ to: "/stores" });
-    } catch (error) {
-      toast.error("Something unexpected :(");
-      console.log(error);
+    } catch (error: any) {
+      toast.error(error.data);
     }
   };
 

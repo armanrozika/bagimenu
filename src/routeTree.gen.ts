@@ -17,12 +17,14 @@ import { Route as SsoCallbaccImport } from './routes/sso-callbacc'
 import { Route as LoginImport } from './routes/login'
 import { Route as PrivateImport } from './routes/_private'
 import { Route as IndexImport } from './routes/index'
+import { Route as StoreStorenameImport } from './routes/store.$store_name'
 import { Route as PrivateStoresIndexImport } from './routes/_private.stores/index'
 import { Route as PrivateProductsIndexImport } from './routes/_private.products/index'
 import { Route as PrivateDashboardIndexImport } from './routes/_private.dashboard/index'
 import { Route as PrivateStoresCreateImport } from './routes/_private.stores/create'
 import { Route as PrivateProductsCreateImport } from './routes/_private.products/create'
 import { Route as PrivateStoresEditIdImport } from './routes/_private.stores/edit.$id'
+import { Route as PrivateProductsEditIdImport } from './routes/_private.products/edit.$id'
 
 // Create/Update Routes
 
@@ -56,6 +58,11 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const StoreStorenameRoute = StoreStorenameImport.update({
+  path: '/store/$store_name',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const PrivateStoresIndexRoute = PrivateStoresIndexImport.update({
   path: '/stores/',
   getParentRoute: () => PrivateRoute,
@@ -83,6 +90,11 @@ const PrivateProductsCreateRoute = PrivateProductsCreateImport.update({
 
 const PrivateStoresEditIdRoute = PrivateStoresEditIdImport.update({
   path: '/stores/edit/$id',
+  getParentRoute: () => PrivateRoute,
+} as any)
+
+const PrivateProductsEditIdRoute = PrivateProductsEditIdImport.update({
+  path: '/products/edit/$id',
   getParentRoute: () => PrivateRoute,
 } as any)
 
@@ -132,6 +144,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerifyEmailImport
       parentRoute: typeof rootRoute
     }
+    '/store/$store_name': {
+      id: '/store/$store_name'
+      path: '/store/$store_name'
+      fullPath: '/store/$store_name'
+      preLoaderRoute: typeof StoreStorenameImport
+      parentRoute: typeof rootRoute
+    }
     '/_private/products/create': {
       id: '/_private/products/create'
       path: '/products/create'
@@ -167,6 +186,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateStoresIndexImport
       parentRoute: typeof PrivateImport
     }
+    '/_private/products/edit/$id': {
+      id: '/_private/products/edit/$id'
+      path: '/products/edit/$id'
+      fullPath: '/products/edit/$id'
+      preLoaderRoute: typeof PrivateProductsEditIdImport
+      parentRoute: typeof PrivateImport
+    }
     '/_private/stores/edit/$id': {
       id: '/_private/stores/edit/$id'
       path: '/stores/edit/$id'
@@ -185,6 +211,7 @@ interface PrivateRouteChildren {
   PrivateDashboardIndexRoute: typeof PrivateDashboardIndexRoute
   PrivateProductsIndexRoute: typeof PrivateProductsIndexRoute
   PrivateStoresIndexRoute: typeof PrivateStoresIndexRoute
+  PrivateProductsEditIdRoute: typeof PrivateProductsEditIdRoute
   PrivateStoresEditIdRoute: typeof PrivateStoresEditIdRoute
 }
 
@@ -194,6 +221,7 @@ const PrivateRouteChildren: PrivateRouteChildren = {
   PrivateDashboardIndexRoute: PrivateDashboardIndexRoute,
   PrivateProductsIndexRoute: PrivateProductsIndexRoute,
   PrivateStoresIndexRoute: PrivateStoresIndexRoute,
+  PrivateProductsEditIdRoute: PrivateProductsEditIdRoute,
   PrivateStoresEditIdRoute: PrivateStoresEditIdRoute,
 }
 
@@ -207,11 +235,13 @@ export interface FileRoutesByFullPath {
   '/sso-callbacc': typeof SsoCallbaccRoute
   '/sso-callback': typeof SsoCallbackRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/store/$store_name': typeof StoreStorenameRoute
   '/products/create': typeof PrivateProductsCreateRoute
   '/stores/create': typeof PrivateStoresCreateRoute
   '/dashboard': typeof PrivateDashboardIndexRoute
   '/products': typeof PrivateProductsIndexRoute
   '/stores': typeof PrivateStoresIndexRoute
+  '/products/edit/$id': typeof PrivateProductsEditIdRoute
   '/stores/edit/$id': typeof PrivateStoresEditIdRoute
 }
 
@@ -222,11 +252,13 @@ export interface FileRoutesByTo {
   '/sso-callbacc': typeof SsoCallbaccRoute
   '/sso-callback': typeof SsoCallbackRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/store/$store_name': typeof StoreStorenameRoute
   '/products/create': typeof PrivateProductsCreateRoute
   '/stores/create': typeof PrivateStoresCreateRoute
   '/dashboard': typeof PrivateDashboardIndexRoute
   '/products': typeof PrivateProductsIndexRoute
   '/stores': typeof PrivateStoresIndexRoute
+  '/products/edit/$id': typeof PrivateProductsEditIdRoute
   '/stores/edit/$id': typeof PrivateStoresEditIdRoute
 }
 
@@ -238,11 +270,13 @@ export interface FileRoutesById {
   '/sso-callbacc': typeof SsoCallbaccRoute
   '/sso-callback': typeof SsoCallbackRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/store/$store_name': typeof StoreStorenameRoute
   '/_private/products/create': typeof PrivateProductsCreateRoute
   '/_private/stores/create': typeof PrivateStoresCreateRoute
   '/_private/dashboard/': typeof PrivateDashboardIndexRoute
   '/_private/products/': typeof PrivateProductsIndexRoute
   '/_private/stores/': typeof PrivateStoresIndexRoute
+  '/_private/products/edit/$id': typeof PrivateProductsEditIdRoute
   '/_private/stores/edit/$id': typeof PrivateStoresEditIdRoute
 }
 
@@ -255,11 +289,13 @@ export interface FileRouteTypes {
     | '/sso-callbacc'
     | '/sso-callback'
     | '/verify-email'
+    | '/store/$store_name'
     | '/products/create'
     | '/stores/create'
     | '/dashboard'
     | '/products'
     | '/stores'
+    | '/products/edit/$id'
     | '/stores/edit/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -269,11 +305,13 @@ export interface FileRouteTypes {
     | '/sso-callbacc'
     | '/sso-callback'
     | '/verify-email'
+    | '/store/$store_name'
     | '/products/create'
     | '/stores/create'
     | '/dashboard'
     | '/products'
     | '/stores'
+    | '/products/edit/$id'
     | '/stores/edit/$id'
   id:
     | '__root__'
@@ -283,11 +321,13 @@ export interface FileRouteTypes {
     | '/sso-callbacc'
     | '/sso-callback'
     | '/verify-email'
+    | '/store/$store_name'
     | '/_private/products/create'
     | '/_private/stores/create'
     | '/_private/dashboard/'
     | '/_private/products/'
     | '/_private/stores/'
+    | '/_private/products/edit/$id'
     | '/_private/stores/edit/$id'
   fileRoutesById: FileRoutesById
 }
@@ -299,6 +339,7 @@ export interface RootRouteChildren {
   SsoCallbaccRoute: typeof SsoCallbaccRoute
   SsoCallbackRoute: typeof SsoCallbackRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
+  StoreStorenameRoute: typeof StoreStorenameRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -308,6 +349,7 @@ const rootRouteChildren: RootRouteChildren = {
   SsoCallbaccRoute: SsoCallbaccRoute,
   SsoCallbackRoute: SsoCallbackRoute,
   VerifyEmailRoute: VerifyEmailRoute,
+  StoreStorenameRoute: StoreStorenameRoute,
 }
 
 export const routeTree = rootRoute
@@ -327,7 +369,8 @@ export const routeTree = rootRoute
         "/login",
         "/sso-callbacc",
         "/sso-callback",
-        "/verify-email"
+        "/verify-email",
+        "/store/$store_name"
       ]
     },
     "/": {
@@ -341,6 +384,7 @@ export const routeTree = rootRoute
         "/_private/dashboard/",
         "/_private/products/",
         "/_private/stores/",
+        "/_private/products/edit/$id",
         "/_private/stores/edit/$id"
       ]
     },
@@ -355,6 +399,9 @@ export const routeTree = rootRoute
     },
     "/verify-email": {
       "filePath": "verify-email.tsx"
+    },
+    "/store/$store_name": {
+      "filePath": "store.$store_name.tsx"
     },
     "/_private/products/create": {
       "filePath": "_private.products/create.tsx",
@@ -374,6 +421,10 @@ export const routeTree = rootRoute
     },
     "/_private/stores/": {
       "filePath": "_private.stores/index.tsx",
+      "parent": "/_private"
+    },
+    "/_private/products/edit/$id": {
+      "filePath": "_private.products/edit.$id.tsx",
       "parent": "/_private"
     },
     "/_private/stores/edit/$id": {

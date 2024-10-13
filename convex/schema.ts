@@ -13,7 +13,9 @@ export default defineSchema({
     url: v.string(),
     whatsapp: v.string(),
     owner_identifier: v.string(),
-  }).index("by_token", ["owner_identifier"]),
+  })
+    .index("by_token", ["owner_identifier"])
+    .index("by_url", ["url"]),
   products: defineTable({
     name: v.string(),
     price: v.number(),
