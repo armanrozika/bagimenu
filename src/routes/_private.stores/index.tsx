@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { convexQuery } from "@convex-dev/react-query";
 import { IoStorefrontOutline } from "react-icons/io5";
 import { FiEdit, FiPlusSquare } from "react-icons/fi";
+import LoadingLine from "../../components/LoadingLine";
 // import { LuTrash } from "react-icons/lu";
 
 export const Route = createFileRoute("/_private/stores/")({
@@ -16,14 +17,11 @@ function Toko() {
   const { data, isLoading } = useQuery(convexQuery(api.stores.get, {}));
   const { data: user } = useQuery(convexQuery(api.users.get, {}));
 
-  if (isLoading) {
-    return <p>...Loading</p>;
-  }
-  if (!data) {
-    return <p>Error...</p>;
-  }
-
   const renderToko = () => {
+    if (isLoading) {
+      return <LoadingLine />;
+    }
+    if (!data) return;
     if (data.length < 1) {
       return <NoData text="Buat Toko dengan Klik Tombol Tambah Toko" />;
     }
@@ -60,7 +58,7 @@ function Toko() {
   };
 
   const renderAddStoreButton = () => {
-    if (!user) return;
+    if (!user || !data) return;
     const disableCreate = user.plan === "basic" && data.length === 1;
     return (
       <Link
@@ -75,7 +73,7 @@ function Toko() {
   };
 
   const renderProNotif = () => {
-    if (!user) return;
+    if (!user || !data) return;
     if (user.plan === "basic" && data.length === 1) {
       return (
         <p className="text-sm text-gray-400 text-right mt-3 mr-5">
