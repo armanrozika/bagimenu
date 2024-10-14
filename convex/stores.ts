@@ -70,7 +70,6 @@ export const getSingleStore = query({
     id: v.id("stores"),
   },
   handler: async (ctx, args) => {
-    await authorizeUser(ctx, "No Auth: get single store");
     const store = await ctx.db.get(args.id);
     return store;
   },

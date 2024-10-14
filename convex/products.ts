@@ -28,6 +28,14 @@ export const get = query({
   },
 });
 
+export const getProduct = query({
+  args: { id: v.id("products") },
+  handler: async (ctx, args) => {
+    const product = await ctx.db.get(args.id);
+    return product;
+  },
+});
+
 export const add = mutation({
   args: {
     name: v.string(),
@@ -54,6 +62,20 @@ export const add = mutation({
       });
       return res;
     }
+  },
+});
+
+export const patch = mutation({
+  args: {
+    id: v.id("products"),
+    formData: v.object({
+      name: v.string(),
+      price: v.number(),
+      image_url: v.string(),
+    }),
+  },
+  handler: async (cts, args) => {
+    await cts.db.patch(args.id, args.formData);
   },
 });
 

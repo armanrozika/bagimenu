@@ -1,84 +1,46 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { IKContext, IKUpload } from "imagekitio-react";
-import { useAction } from "convex/react";
-import { api } from "../../../convex/_generated/api";
 import BackTitle from "../../components/BackTitle";
-import { useState } from "react";
-import toast from "react-hot-toast";
 import { useProductMutation } from "../../mutations/useProductMutations";
-import { SpinnerWhite } from "../../assets";
+import { SpinnerPurple, SpinnerWhite } from "../../assets";
+import { MutationType } from "../../types/types";
+import { Id } from "../../../convex/_generated/dataModel";
 
 export const Route = createFileRoute("/_private/products/create")({
   component: CreateProduct,
 });
 
 function CreateProduct() {
-  const [imgUrl, setImgUrl] = useState("");
-  const [loading, setLoading] = useState(false);
-  const product = useAction(api.actionProduct.add);
-  const { form, submitData } = useProductMutation();
-
-  const renderImageKit = () => {
-    const authenticator = async () => {
-      try {
-        const secret = await product();
-        const data = secret;
-        const { signature, expire, token } = data;
-        return { signature, expire, token };
-      } catch (error) {
-        throw new Error(`Authentication request failed`);
-      }
-    };
-    return (
-      <IKContext
-        publicKey="public_+J9ulTfiQYH9h+hkrGGXLHXCRp8="
-        urlEndpoint="https://ik.imagekit.io/bagimenu"
-        authenticator={authenticator}
-      >
-        <IKUpload
-          fileName="/user/abc.jpg"
-          tags={["tag1"]}
-          useUniqueFileName={true}
-          isPrivateFile={false}
-          onUploadStart={() => {
-            setLoading(true);
-          }}
-          onError={(error) => {
-            setLoading(false);
-            toast.error("Error, please try again");
-            console.log(error);
-          }}
-          onSuccess={(response) => {
-            setLoading(false);
-            setImgUrl(response.url);
-            form.register("image_url", {
-              value: response.url,
-            });
-          }}
-          className="border border-gray-200 rounded-lg p-2 cursor-pointer text-gray-400"
-        />
-      </IKContext>
-    );
-  };
+  const { form, submitData, imgUrl, loading, handleFileChange } =
+    useProductMutation(MutationType.Create, "_" as Id<"products">);
 
   return (
     <form onSubmit={form.handleSubmit(submitData)}>
       <BackTitle backTo="/products" title="Tambah Produk" />
       <div className="border border-gray-100 rounded-2xl grid grid-cols-2 gap-10">
-        <div className="p-7">
+        <div className="p-7 relative">
           <img
-            src={imgUrl || "https://placehold.co/600x400?text=Gambar"}
+            src={imgUrl || "https://placehold.co/250x250?text=Gambar"}
             alt=""
             className="w-[250px] h-[250px] object-cover mx-auto mb-1 rounded-2xl"
           />
           {loading && (
-            <div className="bg-gradient-to-tr from-violet-600 via-violet-600 to-indigo-600 h-[1px] animate-ping w-[100px] mx-auto rounded-xl"></div>
+            <div className="absolute w-32 h-32 m-auto left-0 right-0 top-0 bottom-20">
+              <img src={SpinnerPurple} alt="" className="" />
+            </div>
           )}
 
           <p className="text-center text-hitampudar mb-2 mt-4 text-sm">
             Upload Gambar Produk
           </p>
-          {renderImageKit()}
+          <label htmlFor="file-input" className="cursor-pointer sr-only">
+            Choose
+          </label>
+          <input
+            type="file"
+            id="file-input"
+            className="block w-full text-sm border border-gray-200 rounded-lg shadow-sm cursor-pointer focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 "
+            onChange={handleFileChange}
+          />
         </div>
         <div className="p-7">
           <input
