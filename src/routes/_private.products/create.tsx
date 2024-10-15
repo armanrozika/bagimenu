@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useAuth } from "@clerk/clerk-react";
 import BackTitle from "../../components/BackTitle";
 import { useProductMutation } from "../../mutations/useProductMutations";
 import { SpinnerPurple, SpinnerWhite } from "../../assets";
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/_private/products/create")({
 function CreateProduct() {
   const { form, submitData, imgUrl, loading, handleFileChange } =
     useProductMutation(MutationType.Create, "_" as Id<"products">);
+  const { getToken } = useAuth();
 
   return (
     <form onSubmit={form.handleSubmit(submitData)}>
@@ -39,7 +41,7 @@ function CreateProduct() {
             type="file"
             id="file-input"
             className="block w-full text-sm border border-gray-200 rounded-lg shadow-sm cursor-pointer focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 "
-            onChange={handleFileChange}
+            onChange={(e) => handleFileChange(e, getToken)}
           />
         </div>
         <div className="p-7">

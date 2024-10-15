@@ -1,11 +1,12 @@
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { CreateProductType, MutationType } from "../types/types";
-import { useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
 import toast from "react-hot-toast";
+import { useMutation } from "convex/react";
+
+import { CreateProductType, MutationType } from "../types/types";
+import { api } from "../../convex/_generated/api";
 import { useNavigate } from "@tanstack/react-router";
 import { Id } from "../../convex/_generated/dataModel";
-import { useState } from "react";
 
 export const useProductMutation = (
   mutationType: MutationType,
@@ -17,24 +18,30 @@ export const useProductMutation = (
   const addProduct = useMutation(api.products.add);
   const updateProduct = useMutation(api.products.patch);
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    getToken: any
+  ) => {
     try {
       setLoading(true);
+      const token = await getToken();
       if (e.target.files) {
         const formData = new FormData();
         formData.append("image", e.target.files[0]);
         const res = await fetch("https://api.beembingan.com/images", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           method: "POST",
           body: formData,
         });
         const data = await res.json();
-        form.register("image_url", {
-          value: data.image_url,
-        });
+        form.setValue("image_url", data.image_url);
         setImgUrl(data.image_url);
         setLoading(false);
       }
     } catch (error) {
+      console.log(error);
       setLoading(false);
       toast.error("Error, coba refresh halaman");
     }
@@ -47,12 +54,15 @@ export const useProductMutation = (
         await addProduct(formData);
       }
       if (mutationType === MutationType.Patch) {
+        //need to read from state, in case user dont want to change image
+        //if that's the case, it will not trigger handleFileChange
+        //so we need to read image_url from the state
         formData.image_url = imgUrl;
         await updateProduct({ id: id, formData: formData });
       }
       navigate({ to: "/products" });
     } catch (error) {
-      toast.error("Network Error");
+      toast.error("Harus ada gambar produk, atau coba refresh halaman");
       console.log(error);
     }
   };

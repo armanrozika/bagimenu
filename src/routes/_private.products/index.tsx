@@ -7,7 +7,6 @@ import NoData from "../../components/NoData";
 import LoadingLine from "../../components/LoadingLine";
 import { LuTrash } from "react-icons/lu";
 import { useMutation } from "convex/react";
-import { Id } from "../../../convex/_generated/dataModel";
 import toast from "react-hot-toast";
 
 export const Route = createFileRoute("/_private/products/")({
@@ -55,7 +54,7 @@ function Products() {
             <LuTrash
               onClick={async () => {
                 await deleteProduct({ id: product._id });
-                toast.success("Product deleted");
+                toast.success(`${product.name} telah dihapus`);
               }}
               className="ml-7 text-gray-500 cursor-pointer hover:text-rose-500"
             />
@@ -78,7 +77,7 @@ function Products() {
           Tambah Produk
         </Link>
       </div>
-      <div className="mt-5">{renderProduk()}</div>
+      {renderProduk()}
     </>
   );
 }

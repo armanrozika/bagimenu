@@ -71,19 +71,10 @@ function Toko() {
     });
   };
 
-  const renderAddStoreButton = () => {
+  const isDisabled = () => {
     if (!user || !data) return;
     const disableCreate = user.plan === "basic" && data.length === 1;
-    return (
-      <Link
-        disabled={disableCreate}
-        to="/stores/create"
-        className="flex items-center px-5 py-2 text-sm font-semibold transition border rounded-full border-ungu text-ungu hover:bg-indigo-50"
-      >
-        <FiPlusSquare className="mr-2 text-lg" />
-        Tambah Toko
-      </Link>
-    );
+    return disableCreate;
   };
 
   const renderProNotif = () => {
@@ -101,7 +92,14 @@ function Toko() {
     <>
       <div className="flex items-center justify-between pb-3 mb-3 border-b border-gray-100">
         <h1 className="font-semibold text-hitampudar">Toko</h1>
-        {renderAddStoreButton()}
+        <Link
+          disabled={isDisabled()}
+          to="/stores/create"
+          className="flex items-center px-5 py-2 text-sm font-semibold transition border rounded-full border-ungu text-ungu hover:bg-indigo-50"
+        >
+          <FiPlusSquare className="mr-2 text-lg" />
+          Tambah Toko
+        </Link>
       </div>
       {renderToko()}
       {renderProNotif()}

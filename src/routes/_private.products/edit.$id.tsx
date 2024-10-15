@@ -7,6 +7,7 @@ import { SpinnerPurple, SpinnerWhite } from "../../assets";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useEffect } from "react";
+import { useAuth } from "@clerk/clerk-react";
 
 export const Route = createFileRoute("/_private/products/edit/$id")({
   component: EditProduct,
@@ -21,6 +22,8 @@ function EditProduct() {
     id: id as Id<"products">,
   });
 
+  const { getToken } = useAuth();
+
   useEffect(() => {
     if (product) {
       setImgUrl(product.image_url);
@@ -29,7 +32,7 @@ function EditProduct() {
 
   return (
     <form onSubmit={form.handleSubmit(submitData)}>
-      <BackTitle backTo="/products" title="Tambah Produk" />
+      <BackTitle backTo="/products" title="Edit Produk" />
       {product && (
         <>
           <div className="border border-gray-100 rounded-2xl grid grid-cols-2 gap-10">
@@ -55,7 +58,7 @@ function EditProduct() {
                 type="file"
                 id="file-input"
                 className="block w-full text-sm border border-gray-200 rounded-lg shadow-sm cursor-pointer focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4 "
-                onChange={handleFileChange}
+                onChange={(e) => handleFileChange(e, getToken)}
               />
             </div>
             <div className="p-7">
