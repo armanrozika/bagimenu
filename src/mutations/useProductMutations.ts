@@ -2,10 +2,9 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useMutation } from "convex/react";
-
+import { useNavigate } from "@tanstack/react-router";
 import { CreateProductType, MutationType } from "../types/types";
 import { api } from "../../convex/_generated/api";
-import { useNavigate } from "@tanstack/react-router";
 import { Id } from "../../convex/_generated/dataModel";
 
 export const useProductMutation = (
@@ -47,22 +46,39 @@ export const useProductMutation = (
     }
   };
 
-  const form = useForm<CreateProductType>();
+  const form = useForm<CreateProductType>({
+    defaultValues: {
+      category_id: "ALL",
+    },
+  });
   const submitData: SubmitHandler<CreateProductType> = async (formData) => {
     try {
       if (mutationType === MutationType.Create) {
-        await addProduct(formData);
+        await addProduct({
+          name: formData.name,
+          price: formData.price,
+          image_url: formData.image_url,
+          category_id: formData.category_id as Id<"categories">,
+        });
       }
       if (mutationType === MutationType.Patch) {
         //need to read from state, in case user dont want to change image
         //if that's the case, it will not trigger handleFileChange
         //so we need to read image_url from the state
         formData.image_url = imgUrl;
-        await updateProduct({ id: id, formData: formData });
+        await updateProduct({
+          id: id,
+          formData: {
+            name: formData.name,
+            price: formData.price,
+            image_url: formData.image_url,
+            category_id: formData.category_id as Id<"categories">,
+          },
+        });
       }
       navigate({ to: "/products" });
     } catch (error) {
-      toast.error("Harus ada gambar produk, atau coba refresh halaman");
+      toast.error("Harus ada gambar produk");
       console.log(error);
     }
   };

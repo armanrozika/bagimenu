@@ -7,6 +7,7 @@ import { BsCart2 } from "react-icons/bs";
 import { IoAnalytics } from "react-icons/io5";
 import Icon from "./Icon";
 import { useClerk } from "@clerk/clerk-react";
+import { GoChecklist } from "react-icons/go";
 
 function Sidebar({
   isOpen,
@@ -75,6 +76,14 @@ function Sidebar({
         >
           <AiOutlineShop className="mr-3 text-xl" />
           <p>Toko</p>
+        </Link>
+        <Link
+          to="/categories"
+          className="flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md cursor-pointer text-hitampudar hover:bg-ungupudar hover:text-ungu"
+          onClick={() => setIsOpen(false)}
+        >
+          <GoChecklist className="mr-3 text-xl" />
+          <p>Kategori</p>
         </Link>
 
         <div

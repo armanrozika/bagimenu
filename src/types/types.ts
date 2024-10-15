@@ -28,4 +28,9 @@ export type CreateProductType = {
   name: string;
   price: number;
   image_url: string;
+  category_id: string;
+};
+
+export type CreateCategoryType = {
+  name: string;
 };

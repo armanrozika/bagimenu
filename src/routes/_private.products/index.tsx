@@ -6,8 +6,10 @@ import { useQuery } from "@tanstack/react-query";
 import NoData from "../../components/NoData";
 import LoadingLine from "../../components/LoadingLine";
 import { LuTrash } from "react-icons/lu";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery as dbQuery } from "convex/react";
 import toast from "react-hot-toast";
+import Select from "react-select";
+import { Id } from "../../../convex/_generated/dataModel";
 
 export const Route = createFileRoute("/_private/products/")({
   component: Products,
@@ -18,11 +20,9 @@ function Products() {
     ...convexQuery(api.products.get, {}),
   });
   const deleteProduct = useMutation(api.products.deleteProduct);
+  const categories = dbQuery(api.categories.get);
 
   const renderProduk = () => {
-    if (isLoading) {
-      return <LoadingLine />;
-    }
     if (!products) return;
 
     if (products === "no store") {
@@ -31,7 +31,6 @@ function Products() {
     if (products.length < 1) {
       return <NoData text="Belum Ada Produk" />;
     }
-
     return products.map((product) => {
       return (
         <div
@@ -53,8 +52,12 @@ function Products() {
             </Link>
             <LuTrash
               onClick={async () => {
-                await deleteProduct({ id: product._id });
-                toast.success(`${product.name} telah dihapus`);
+                try {
+                  await deleteProduct({ id: product._id });
+                  toast.success(`${product.name} berhasil dihapus`);
+                } catch (error) {
+                  toast.error("Terjadi kesalahan");
+                }
               }}
               className="ml-7 text-gray-500 cursor-pointer hover:text-rose-500"
             />
@@ -62,6 +65,24 @@ function Products() {
         </div>
       );
     });
+  };
+
+  const renderOptions = () => {
+    if (!categories || categories === "no category") {
+      return [{ value: "ALL", label: "All" }];
+    } else {
+      const mergedCategories = categories.map((category) => {
+        return {
+          value: category._id,
+          label: category.name,
+        };
+      });
+      mergedCategories.unshift({
+        value: "ALL" as Id<"categories">,
+        label: "All",
+      });
+      return mergedCategories;
+    }
   };
 
   return (
@@ -76,6 +97,31 @@ function Products() {
           <FiPlusSquare className="mr-2 text-lg" />
           Tambah Produk
         </Link>
+      </div>
+
+      {isLoading && <LoadingLine />}
+
+      <div className="flex justify-between mt-2 mb-7 items-center">
+        <Select
+          options={renderOptions()}
+          className="w-1/3 text-sm"
+          defaultValue={{ value: "ALL", label: "All" }}
+          //@ts-ignore
+          theme={(theme) => ({
+            ...theme,
+            borderRadius: "0.5rem",
+            colors: {
+              ...theme.colors,
+              primary25: "#f4f3ff",
+              primary: "#8061f1",
+            },
+          })}
+        />
+        <input
+          type="text"
+          placeholder="Cari Nama Produk ⏎"
+          className="border border-gray-200 rounded-lg py-2 px-3 w-1/3"
+        />
       </div>
       {renderProduk()}
     </>

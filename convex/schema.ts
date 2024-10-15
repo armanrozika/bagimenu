@@ -6,7 +6,7 @@ export default defineSchema({
     email: v.string(),
     tokenIdentifier: v.string(),
     plan: v.union(v.literal("basic"), v.literal("pro")),
-    default_store: v.union(v.string(), v.null()),
+    default_store: v.union(v.id("stores"), v.null()),
   }).index("by_token", ["tokenIdentifier"]),
   stores: defineTable({
     name: v.string(),
@@ -21,6 +21,11 @@ export default defineSchema({
     price: v.number(),
     is_active: v.boolean(),
     image_url: v.string(),
-    store_id: v.string(),
+    store_id: v.id("stores"),
+    category_id: v.union(v.id("categories"), v.literal("ALL")),
   }).index("by_toko", ["store_id"]),
+  categories: defineTable({
+    name: v.string(),
+    store_id: v.id("stores"),
+  }).index("by_store", ["store_id"]),
 });

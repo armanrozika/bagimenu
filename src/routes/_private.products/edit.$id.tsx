@@ -1,4 +1,7 @@
+import { useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import Select from "react-select";
+import { useAuth } from "@clerk/clerk-react";
 import BackTitle from "../../components/BackTitle";
 import { useProductMutation } from "../../mutations/useProductMutations";
 import { MutationType } from "../../types/types";
@@ -6,8 +9,6 @@ import { Id } from "../../../convex/_generated/dataModel";
 import { SpinnerPurple, SpinnerWhite } from "../../assets";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import { useEffect } from "react";
-import { useAuth } from "@clerk/clerk-react";
 
 export const Route = createFileRoute("/_private/products/edit/$id")({
   component: EditProduct,
@@ -17,6 +18,7 @@ function EditProduct() {
   const { id } = Route.useParams();
   const { form, submitData, loading, imgUrl, setImgUrl, handleFileChange } =
     useProductMutation(MutationType.Patch, id as Id<"products">);
+  const categories = useQuery(api.categories.get);
 
   const product = useQuery(api.products.getProduct, {
     id: id as Id<"products">,
@@ -30,11 +32,69 @@ function EditProduct() {
     }
   }, [product]);
 
+  const renderOptions = () => {
+    if (!categories || categories === "no category") {
+      return [{ value: "ALL", label: "All" }];
+    } else {
+      const mergedCategories = categories.map((category) => {
+        return {
+          value: category._id,
+          label: category.name,
+        };
+      });
+      mergedCategories.unshift({
+        value: "ALL" as Id<"categories">,
+        label: "All",
+      });
+      return mergedCategories;
+    }
+  };
+
+  const autoSelectedCategory = () => {
+    if (!product) return;
+    //no categories = user haven't create one yet
+    if (categories === "no category") {
+      return [{ value: "ALL", label: "All" }];
+    }
+    const productCategory = categories?.find(
+      (category) => category._id === product.category_id
+    );
+    if (productCategory) {
+      form.setValue("category_id", productCategory._id);
+      return {
+        value: productCategory._id,
+        label: productCategory.name,
+      };
+    } else {
+      //this means product's category is deleted
+      //or product's category is All
+      return [{ value: "ALL", label: "All" }];
+    }
+  };
+
+  const renderCategoryMissingWarning = () => {
+    if (!product) return;
+    if (categories === "no category") return;
+    const productCategory = categories?.find(
+      (category) => category._id === product.category_id
+    );
+    if (!productCategory && product?.category_id !== "ALL") {
+      return (
+        <div className="text-center text-sm text-gray-400 mb-3">
+          <p>
+            Kategori produk ini sudah terhapus. Silakan ganti dengan yang baru
+          </p>
+        </div>
+      );
+    }
+  };
+
   return (
     <form onSubmit={form.handleSubmit(submitData)}>
       <BackTitle backTo="/products" title="Edit Produk" />
       {product && (
         <>
+          {renderCategoryMissingWarning()}
           <div className="border border-gray-100 rounded-2xl grid grid-cols-2 gap-10">
             <div className="p-7 relative">
               <img
@@ -80,6 +140,28 @@ function EditProduct() {
                   valueAsNumber: true,
                 })}
               />
+              <div className="mt-2">
+                <p className="text-sm text-hitampudar mb-1">Kategori: </p>
+                <Select
+                  required
+                  options={renderOptions()}
+                  className=" text-sm"
+                  defaultValue={autoSelectedCategory()}
+                  //@ts-ignore
+                  theme={(theme) => ({
+                    ...theme,
+                    borderRadius: "0.5rem",
+                    colors: {
+                      ...theme.colors,
+                      primary25: "#f4f3ff",
+                      primary: "#8061f1",
+                    },
+                  })}
+                  onChange={(e) => {
+                    form.setValue("category_id", e!.value);
+                  }}
+                />
+              </div>
             </div>
           </div>
           <div className="flex justify-end mt-7">

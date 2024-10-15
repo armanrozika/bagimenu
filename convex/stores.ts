@@ -43,7 +43,9 @@ export const add = mutation({
       owner_identifier: identity?.tokenIdentifier,
     });
     if (user) {
-      await ctx.db.patch(user._id, { default_store: store });
+      if (!user.default_store) {
+        await ctx.db.patch(user._id, { default_store: store });
+      }
     }
 
     return store;

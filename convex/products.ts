@@ -41,6 +41,7 @@ export const add = mutation({
     name: v.string(),
     price: v.number(),
     image_url: v.string(),
+    category_id: v.union(v.id("categories"), v.literal("ALL")),
   },
   handler: async (ctx, args) => {
     const identity = await authorizeUser(ctx, "No Auth: add products");
@@ -59,6 +60,7 @@ export const add = mutation({
         is_active: true,
         image_url: args.image_url,
         store_id: user.default_store,
+        category_id: args.category_id,
       });
       return res;
     }
@@ -72,6 +74,7 @@ export const patch = mutation({
       name: v.string(),
       price: v.number(),
       image_url: v.string(),
+      category_id: v.union(v.id("categories"), v.literal("ALL")),
     }),
   },
   handler: async (cts, args) => {

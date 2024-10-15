@@ -1,19 +1,41 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useAuth } from "@clerk/clerk-react";
+import Select from "react-select";
+import { useQuery } from "convex/react";
 import BackTitle from "../../components/BackTitle";
 import { useProductMutation } from "../../mutations/useProductMutations";
 import { SpinnerPurple, SpinnerWhite } from "../../assets";
 import { MutationType } from "../../types/types";
 import { Id } from "../../../convex/_generated/dataModel";
+import { api } from "../../../convex/_generated/api";
 
 export const Route = createFileRoute("/_private/products/create")({
   component: CreateProduct,
 });
 
 function CreateProduct() {
+  const { getToken } = useAuth();
   const { form, submitData, imgUrl, loading, handleFileChange } =
     useProductMutation(MutationType.Create, "_" as Id<"products">);
-  const { getToken } = useAuth();
+  const categories = useQuery(api.categories.get);
+
+  const renderOptions = () => {
+    if (!categories || categories === "no category") {
+      return [{ value: "ALL", label: "All" }];
+    } else {
+      const mergedCategories = categories.map((category) => {
+        return {
+          value: category._id,
+          label: category.name,
+        };
+      });
+      mergedCategories.unshift({
+        value: "ALL" as Id<"categories">,
+        label: "All",
+      });
+      return mergedCategories;
+    }
+  };
 
   return (
     <form onSubmit={form.handleSubmit(submitData)}>
@@ -61,6 +83,28 @@ function CreateProduct() {
               valueAsNumber: true,
             })}
           />
+          <div className="mt-2">
+            <p className="text-sm text-hitampudar mb-1">Kategori: </p>
+            <Select
+              required
+              options={renderOptions()}
+              className=" text-sm"
+              defaultValue={{ value: "ALL", label: "All" }}
+              //@ts-ignore
+              theme={(theme) => ({
+                ...theme,
+                borderRadius: "0.5rem",
+                colors: {
+                  ...theme.colors,
+                  primary25: "#f4f3ff",
+                  primary: "#8061f1",
+                },
+              })}
+              onChange={(e) => {
+                form.setValue("category_id", e!.value);
+              }}
+            />
+          </div>
         </div>
       </div>
       <div className="flex justify-end mt-7">

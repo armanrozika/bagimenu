@@ -15,7 +15,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
-import type * as actionProduct from "../actionProduct.js";
+import type * as categories from "../categories.js";
 import type * as helper_helper from "../helper/helper.js";
 import type * as products from "../products.js";
 import type * as stores from "../stores.js";
@@ -30,7 +30,7 @@ import type * as users from "../users.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
-  actionProduct: typeof actionProduct;
+  categories: typeof categories;
   "helper/helper": typeof helper_helper;
   products: typeof products;
   stores: typeof stores;
