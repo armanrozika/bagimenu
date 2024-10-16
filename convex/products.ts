@@ -11,19 +11,17 @@ export const get = query({
         return q.eq("tokenIdentifier", identity.tokenIdentifier);
       })
       .unique();
-
-    if (user) {
-      if (user.default_store) {
-        const products = await ctx.db
-          .query("products")
-          .withIndex("by_toko", (q) => {
-            return q.eq("store_id", user.default_store!);
-          })
-          .collect();
-        return products;
-      } else {
-        return "no store";
-      }
+    if (!user) throw new Error("No User Found");
+    if (user.default_store) {
+      const products = await ctx.db
+        .query("products")
+        .withIndex("by_toko", (q) => {
+          return q.eq("store_id", user.default_store!);
+        })
+        .collect();
+      return products;
+    } else {
+      return "no_default_store";
     }
   },
 });
@@ -51,10 +49,9 @@ export const add = mutation({
         return q.eq("tokenIdentifier", identity.tokenIdentifier);
       })
       .unique();
-
-    if (user) {
-      if (!user.default_store) return;
-      const res = await ctx.db.insert("products", {
+    if (!user) throw new Error("No User Found");
+    if (user.default_store) {
+      await ctx.db.insert("products", {
         name: args.name,
         price: args.price,
         is_active: true,
@@ -62,7 +59,6 @@ export const add = mutation({
         store_id: user.default_store,
         category_id: args.category_id,
       });
-      return res;
     }
   },
 });
@@ -77,8 +73,20 @@ export const patch = mutation({
       category_id: v.union(v.id("categories"), v.literal("ALL")),
     }),
   },
-  handler: async (cts, args) => {
-    await cts.db.patch(args.id, args.formData);
+  handler: async (ctx, args) => {
+    const identity = await authorizeUser(ctx, "No Auth: add categories");
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => {
+        return q.eq("tokenIdentifier", identity.tokenIdentifier);
+      })
+      .unique();
+    if (!user) throw new Error("No User Found");
+    const product = await ctx.db.get(args.id);
+    if (product?.store_id !== user.default_store) {
+      throw new Error("default_store Don't Match: patch product");
+    }
+    await ctx.db.patch(args.id, args.formData);
   },
 });
 
@@ -87,6 +95,18 @@ export const deleteProduct = mutation({
     id: v.id("products"),
   },
   handler: async (ctx, args) => {
+    const identity = await authorizeUser(ctx, "No Auth: add categories");
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => {
+        return q.eq("tokenIdentifier", identity.tokenIdentifier);
+      })
+      .unique();
+    if (!user) throw new Error("No User Found");
+    const product = await ctx.db.get(args.id);
+    if (product?.store_id !== user.default_store) {
+      throw new Error("default_store Don't Match: delete product");
+    }
     await ctx.db.delete(args.id);
   },
 });

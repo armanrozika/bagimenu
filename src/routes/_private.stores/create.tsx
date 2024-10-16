@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import BackTitle from "../../components/BackTitle";
 import { useStoreMutations } from "../../mutations/useStoresMutations";
 import { MutationType } from "../../types/types";
@@ -25,7 +25,7 @@ function CreateToko() {
               {...storeForm.register("url")}
               required
               type="text"
-              placeholder="Url Toko"
+              placeholder="URL Toko"
               className="w-full p-3 rounded-r-lg "
             />
           </div>
@@ -49,10 +49,17 @@ function CreateToko() {
             />
           </div>
         </div>
-        <div className="flex justify-end mt-4">
+        <div className="flex justify-end mt-7">
+          <Link
+            activeProps={{}}
+            to="/stores"
+            className="bg-gray-100 font-semibold text-sm text-center text-hitampudar w-[100px] py-2 rounded-lg hover:bg-gray-200 transition"
+          >
+            Batal
+          </Link>
           <button
             type="submit"
-            className="px-5 w-[100px] py-2 text-sm font-semibold text-white transition rounded-lg bg-ungu hover:opacity-95"
+            className="ml-7 px-5 w-[100px] py-2 text-sm font-semibold text-white transition rounded-lg bg-ungu hover:opacity-95"
           >
             {storeForm.formState.isSubmitting ? (
               <img src={SpinnerWhite} className="w-[20px] mx-auto" />

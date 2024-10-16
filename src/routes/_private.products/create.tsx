@@ -20,7 +20,7 @@ function CreateProduct() {
   const categories = useQuery(api.categories.get);
 
   const renderOptions = () => {
-    if (!categories || categories === "no category") {
+    if (!categories || categories === "no_default_store") {
       return [{ value: "ALL", label: "All" }];
     } else {
       const mergedCategories = categories.map((category) => {

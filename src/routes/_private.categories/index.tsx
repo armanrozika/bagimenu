@@ -31,7 +31,7 @@ function Categories() {
     if (data.length < 1) {
       return <NoData text="Belum Ada Kategori" />;
     }
-    if (data === "no store") {
+    if (data === "no_default_store") {
       return <NoData text="Silakan Buat Toko Terlebih Dahulu" />;
     }
     const renderForm = () => {
@@ -112,30 +112,32 @@ function Categories() {
       </div>
       {isLoading && <LoadingLine />}
       {renderCategory()}
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          const aio = form.handleSubmit(submitAdd);
-          await aio();
-          form.reset();
-        }}
-        className="flex justify-end items-center mt-5"
-      >
-        <input
-          required
-          type="text"
-          placeholder="Nama Kategori"
-          className="px-3 py-2 bg-gray-50 rounded-lg mr-5 w-1/3"
-          {...form.register("name")}
-        />
-        <button
-          type="submit"
-          className="text-sm flex items-center border border-ungu px-5 py-1.5 text-ungu font-semibold rounded-full hover:bg-gray-100 transition"
+      {data !== "no_default_store" && (
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const aio = form.handleSubmit(submitAdd);
+            await aio();
+            form.reset();
+          }}
+          className="flex justify-end items-center mt-5"
         >
-          <LuCheckSquare className="mr-2 font-semibold" />
-          Tambah
-        </button>
-      </form>
+          <input
+            required
+            type="text"
+            placeholder="Nama Kategori"
+            className="px-3 py-2 bg-gray-50 rounded-lg mr-5 w-1/3"
+            {...form.register("name")}
+          />
+          <button
+            type="submit"
+            className="text-sm flex items-center border border-ungu px-5 py-1.5 text-ungu font-semibold rounded-full hover:bg-gray-100 transition"
+          >
+            <LuCheckSquare className="mr-2 font-semibold" />
+            Tambah
+          </button>
+        </form>
+      )}
     </>
   );
 }
