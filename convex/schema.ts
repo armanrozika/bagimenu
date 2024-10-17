@@ -23,7 +23,9 @@ export default defineSchema({
     image_url: v.string(),
     store_id: v.id("stores"),
     category_id: v.union(v.id("categories"), v.literal("ALL")),
-  }).index("by_toko", ["store_id"]),
+  })
+    .index("by_store", ["store_id"])
+    .index("by_category", ["category_id"]),
   categories: defineTable({
     name: v.string(),
     store_id: v.id("stores"),

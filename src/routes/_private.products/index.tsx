@@ -1,14 +1,15 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { convexQuery } from "@convex-dev/react-query";
 import { FiEdit, FiPlusSquare } from "react-icons/fi";
-import { api } from "../../../convex/_generated/api";
+import toast from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
+import Select from "react-select";
+import { LuTrash } from "react-icons/lu";
+import { api } from "../../../convex/_generated/api";
 import NoData from "../../components/NoData";
 import LoadingLine from "../../components/LoadingLine";
-import { LuTrash } from "react-icons/lu";
 import { useMutation, useQuery as dbQuery } from "convex/react";
-import toast from "react-hot-toast";
-import Select from "react-select";
 import { Id } from "../../../convex/_generated/dataModel";
 
 export const Route = createFileRoute("/_private/products/")({
@@ -16,8 +17,9 @@ export const Route = createFileRoute("/_private/products/")({
 });
 
 function Products() {
+  const [categoryId, setCategoryId] = useState<Id<"categories"> | "ALL">("ALL");
   const { data: products, isLoading } = useQuery({
-    ...convexQuery(api.products.get, {}),
+    ...convexQuery(api.products.get, { id: categoryId }),
   });
   const deleteProduct = useMutation(api.products.deleteProduct);
   const categories = dbQuery(api.categories.get);
@@ -70,19 +72,18 @@ function Products() {
   const renderOptions = () => {
     if (!categories || categories === "no_default_store") {
       return [{ value: "ALL", label: "All" }];
-    } else {
-      const mergedCategories = categories.map((category) => {
-        return {
-          value: category._id,
-          label: category.name,
-        };
-      });
-      mergedCategories.unshift({
-        value: "ALL" as Id<"categories">,
-        label: "All",
-      });
-      return mergedCategories;
     }
+    const mergedCategories = categories.map((category) => {
+      return {
+        value: category._id,
+        label: category.name,
+      };
+    });
+    mergedCategories.unshift({
+      value: "ALL" as Id<"categories">,
+      label: "All",
+    });
+    return mergedCategories;
   };
 
   return (
@@ -116,6 +117,9 @@ function Products() {
               primary: "#8061f1",
             },
           })}
+          onChange={(e) => {
+            e && setCategoryId(e.value as Id<"categories">);
+          }}
         />
         <input
           type="text"

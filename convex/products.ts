@@ -3,7 +3,10 @@ import { mutation, query } from "./_generated/server";
 import { authorizeUser } from "./helper/helper";
 
 export const get = query({
-  handler: async (ctx) => {
+  args: {
+    id: v.union(v.id("categories"), v.literal("ALL")),
+  },
+  handler: async (ctx, args) => {
     const identity = await authorizeUser(ctx, "No Auth: get products");
     const user = await ctx.db
       .query("users")
@@ -13,13 +16,26 @@ export const get = query({
       .unique();
     if (!user) throw new Error("No User Found");
     if (user.default_store) {
-      const products = await ctx.db
-        .query("products")
-        .withIndex("by_toko", (q) => {
-          return q.eq("store_id", user.default_store!);
-        })
-        .collect();
-      return products;
+      if (args.id === "ALL") {
+        const products = await ctx.db
+          .query("products")
+          .withIndex("by_store", (q) => {
+            return q.eq("store_id", user.default_store!);
+          })
+          .collect();
+        return products;
+      } else {
+        const products = await ctx.db
+          .query("products")
+          .filter((q) => {
+            return q.and(
+              q.eq(q.field("store_id"), user.default_store),
+              q.eq(q.field("category_id"), args.id)
+            );
+          })
+          .collect();
+        return products;
+      }
     } else {
       return "no_default_store";
     }

@@ -6,11 +6,8 @@ import { TfiClose } from "react-icons/tfi";
 import { BsCart2 } from "react-icons/bs";
 import { IoAnalytics } from "react-icons/io5";
 import Icon from "./Icon";
-import Select from "react-select";
 import { useClerk } from "@clerk/clerk-react";
 import { GoChecklist } from "react-icons/go";
-import { useMutation, useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
 
 function Sidebar({
   isOpen,
@@ -20,36 +17,6 @@ function Sidebar({
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const { signOut } = useClerk();
-  const stores = useQuery(api.stores.getStoresWithDefault);
-  const updateDefaultStore = useMutation(api.stores.updateDefaultStore);
-
-  const renderSelect = () => {
-    if (stores === "basic") return;
-    if (!stores || stores.length < 1) return;
-    const value = stores.find((store) => store.is_default === true);
-    return (
-      <Select
-        className="my-5 text-sm"
-        options={stores}
-        defaultValue={value}
-        //@ts-ignore
-        theme={(theme) => ({
-          ...theme,
-          borderRadius: "0.5rem",
-          colors: {
-            ...theme.colors,
-            primary25: "#f4f3ff",
-            primary: "#8061f1",
-          },
-        })}
-        onChange={(e) => {
-          if (e && e.value) {
-            updateDefaultStore({ id: e.value });
-          }
-        }}
-      />
-    );
-  };
 
   return (
     <div
@@ -59,8 +26,10 @@ function Sidebar({
         className="absolute lg:hidden top-5 right-5"
         onClick={() => setIsOpen(false)}
       />
-      <Icon />
-      {renderSelect()}
+      <div className="mx-auto mt-5 mb-7">
+        <Icon />
+      </div>
+
       <Link
         className="flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md text-hitampudar hover:bg-ungupudar hover:text-ungu"
         to="/dashboard"
@@ -72,7 +41,7 @@ function Sidebar({
 
       <div className="pt-5 border-t border-gray-100">
         <Link
-          to="/orders"
+          to="/dashboard"
           className="relative flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md text-hitampudar hover:bg-ungupudar hover:text-ungu"
           onClick={() => setIsOpen(false)}
         >
@@ -91,9 +60,17 @@ function Sidebar({
           <AiOutlineProduct className="mr-3 text-xl" />
           Produk
         </Link>
+        <Link
+          to="/categories"
+          className="flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md cursor-pointer text-hitampudar hover:bg-ungupudar hover:text-ungu"
+          onClick={() => setIsOpen(false)}
+        >
+          <GoChecklist className="mr-3 text-xl" />
+          <p>Kategori</p>
+        </Link>
 
         <Link
-          to="/analytics"
+          to="/dashboard"
           className="flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md text-hitampudar hover:bg-ungupudar hover:text-ungu"
           onClick={() => setIsOpen(false)}
         >
@@ -110,14 +87,6 @@ function Sidebar({
         >
           <AiOutlineShop className="mr-3 text-xl" />
           <p>Toko</p>
-        </Link>
-        <Link
-          to="/categories"
-          className="flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md cursor-pointer text-hitampudar hover:bg-ungupudar hover:text-ungu"
-          onClick={() => setIsOpen(false)}
-        >
-          <GoChecklist className="mr-3 text-xl" />
-          <p>Kategori</p>
         </Link>
 
         <div

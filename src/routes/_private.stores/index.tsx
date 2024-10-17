@@ -8,24 +8,25 @@ import { IoStorefrontOutline } from "react-icons/io5";
 import { FiEdit, FiPlusSquare } from "react-icons/fi";
 import LoadingLine from "../../components/LoadingLine";
 import toast from "react-hot-toast";
+import Select from "react-select";
+import { useMutation } from "convex/react";
 
 export const Route = createFileRoute("/_private/stores/")({
   component: Toko,
 });
-
 function Toko() {
-  const { data, isLoading } = useQuery(convexQuery(api.stores.get, {}));
-  const { data: user } = useQuery(convexQuery(api.users.get, {}));
+  const { data: user } = useQuery({ ...convexQuery(api.users.get, {}) });
+  const { data: stores } = useQuery({
+    ...convexQuery(api.stores.getStoresWithDefault, {}),
+  });
+  const updateDefaultStore = useMutation(api.stores.updateDefaultStore);
 
   const renderToko = () => {
-    if (isLoading) {
-      return <LoadingLine />;
-    }
-    if (!data) return;
-    if (data.length < 1) {
+    if (stores == undefined) return;
+    if (stores.length < 1) {
       return <NoData text="Buat Toko dengan Klik Tombol Tambah Toko" />;
     }
-    return data.map((store) => {
+    return stores.map((store) => {
       return (
         <div
           key={store._id}
@@ -72,20 +73,52 @@ function Toko() {
   };
 
   const isDisabled = () => {
-    if (!user || !data) return;
-    const disableCreate = user.plan === "basic" && data.length === 1;
+    if (!user || !stores) return;
+    const disableCreate = user.plan === "basic" && stores.length === 1;
     return disableCreate;
   };
 
   const renderProNotif = () => {
-    if (!user || !data) return;
-    if (user.plan === "basic" && data.length === 1) {
+    if (!user || !stores) return;
+    if (user.plan === "basic" && stores.length === 1) {
       return (
         <p className="text-sm text-gray-400 text-right mt-3 mr-5">
           Upgrade ke Pro jika ingin menambah toko baru
         </p>
       );
     }
+  };
+  const renderOptions = () => {
+    if (!stores || stores.length < 1) return;
+    return stores;
+  };
+
+  const renderSelect = () => {
+    if (stores === undefined) return;
+    const value = stores.find((store) => store.is_default === true);
+    // return value;
+    return (
+      <Select
+        className="text-sm w-1/4"
+        options={renderOptions()}
+        defaultValue={value}
+        //@ts-ignore
+        theme={(theme) => ({
+          ...theme,
+          borderRadius: "0.5rem",
+          colors: {
+            ...theme.colors,
+            primary25: "#f4f3ff",
+            primary: "#8061f1",
+          },
+        })}
+        onChange={(e) => {
+          if (e && e.value) {
+            updateDefaultStore({ id: e.value });
+          }
+        }}
+      />
+    );
   };
 
   return (
@@ -101,7 +134,17 @@ function Toko() {
           Tambah Toko
         </Link>
       </div>
+
+      {stores === undefined && <LoadingLine />}
+      {user?.plan === "pro" && (
+        <div className="flex items-center">
+          <p className="mr-3 text-sm text-hitampudar">Sedang Dikelola:</p>
+          {renderSelect()}
+        </div>
+      )}
+
       {renderToko()}
+
       {renderProNotif()}
     </>
   );

@@ -124,11 +124,27 @@ export const getStoresWithDefault = query({
         is_default,
       };
     });
-    if (user.plan === "pro") {
-      return returnValue;
-    } else {
-      return "basic";
+    return returnValue;
+  },
+});
+
+export const defaultStore = query({
+  handler: async (ctx) => {
+    const identity = await authorizeUser(ctx, "No Auth: patch store");
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) => {
+        return q.eq("tokenIdentifier", identity.tokenIdentifier);
+      })
+      .unique();
+    if (!user) throw new Error("No User Found");
+    if (!user.default_store) {
+      return {
+        name: "Toko Belum Dibuat",
+      };
     }
+    const default_store = await ctx.db.get(user.default_store);
+    return default_store;
   },
 });
 

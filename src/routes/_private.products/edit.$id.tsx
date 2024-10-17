@@ -33,7 +33,7 @@ function EditProduct() {
   }, [product]);
 
   const renderOptions = () => {
-    if (!categories || categories === "no category") {
+    if (!categories || categories === "no_default_store") {
       return [{ value: "ALL", label: "All" }];
     } else {
       const mergedCategories = categories.map((category) => {
@@ -53,7 +53,7 @@ function EditProduct() {
   const autoSelectedCategory = () => {
     if (!product) return;
     //no categories = user haven't create one yet
-    if (categories === "no category") {
+    if (categories === "no_default_store") {
       return [{ value: "ALL", label: "All" }];
     }
     const productCategory = categories?.find(
@@ -74,7 +74,7 @@ function EditProduct() {
 
   const renderCategoryMissingWarning = () => {
     if (!product) return;
-    if (categories === "no category") return;
+    if (categories === "no_default_store") return;
     const productCategory = categories?.find(
       (category) => category._id === product.category_id
     );

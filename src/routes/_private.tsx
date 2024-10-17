@@ -4,6 +4,9 @@ import { CiMenuFries } from "react-icons/ci";
 import { useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 import { SpinnerPurple } from "../assets";
+import { useQuery } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import { IoStorefrontOutline } from "react-icons/io5";
 
 export const Route = createFileRoute("/_private")({
   component: PrivateWrapper,
@@ -12,6 +15,7 @@ export const Route = createFileRoute("/_private")({
 function PrivateWrapper() {
   const { isSignedIn, isLoaded } = useUser();
   const [isOpen, setIsOpen] = useState(false);
+  const defaultStore = useQuery(api.stores.defaultStore);
 
   if (!isLoaded) {
     return (
@@ -30,9 +34,17 @@ function PrivateWrapper() {
           <CiMenuFries />
         </div>
         <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
-        <div className="w-full p-5 lg:p-16 max-w-[1200px] mx-auto">
-          <div className="bg-white p-5 lg:p-10 rounded-3xl mt-[50px] lg:mt-0">
-            <Outlet />
+        <div className="w-full">
+          <div className="bg-ungu text-white p-3 font-semibold flex items-center">
+            <IoStorefrontOutline className="mr-2 text-xl" />
+
+            <p>{defaultStore?.name}</p>
+          </div>
+
+          <div className="p-5 lg:p-16 max-w-[1200px] mx-auto">
+            <div className="bg-white p-5 lg:p-10 rounded-3xl mt-[50px] lg:mt-0">
+              <Outlet />
+            </div>
           </div>
         </div>
       </div>
