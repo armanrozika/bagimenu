@@ -15,7 +15,8 @@ export default defineSchema({
     owner_identifier: v.string(),
   })
     .index("by_token", ["owner_identifier"])
-    .index("by_url", ["url"]),
+    .index("by_url", ["url"])
+    .index("by_name", ["name"]),
   products: defineTable({
     name: v.string(),
     price: v.number(),
