@@ -1,20 +1,13 @@
 import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { FiEdit, FiPlusSquare } from "react-icons/fi";
-import toast from "react-hot-toast";
+import { FiPlusSquare } from "react-icons/fi";
 import Select from "react-select";
-import { LuTrash } from "react-icons/lu";
 import { api } from "../../../convex/_generated/api";
 import NoData from "../../components/NoData";
 import LoadingLine from "../../components/LoadingLine";
-import {
-  useMutation,
-  useQuery as dbQuery,
-  usePaginatedQuery,
-  useQuery,
-} from "convex/react";
+import { useQuery as dbQuery, usePaginatedQuery, useQuery } from "convex/react";
 import { Id } from "../../../convex/_generated/dataModel";
-import SearchResult from "../../components/SearchResult";
+import ProductList from "../../components/ProductList";
 
 type Filter = {
   name?: string;
@@ -56,8 +49,6 @@ function Products() {
     categoryId: categoryId.value,
   });
 
-  const deleteProduct = useMutation(api.products.deleteProduct);
-
   const renderProduk = () => {
     if (!products && !isLoading) return;
     if (user?.default_store === null) {
@@ -68,43 +59,9 @@ function Products() {
     }
     if (name && !searchResult) return;
     if (name && searchResult) {
-      return <SearchResult products={searchResult} />;
+      return <ProductList products={searchResult} />;
     }
-
-    return products.map((product) => {
-      return (
-        <div
-          key={product._id}
-          className="grid grid-cols-4 gap-2 items-center p-3 border-b border-gray-100 transition hover:bg-gray-100 rounded-xl"
-        >
-          <img
-            src={product.image_url}
-            alt=""
-            className="w-[50px] h-[50px] object-cover rounded-full"
-          />
-          <p className="text-hitampudar text-sm font-semibold">
-            {product.name}
-          </p>
-          <p className="text-hitampudar text-sm">{product.price}</p>
-          <div className="text-lg flex justify-end">
-            <Link to={`/products/edit/${product._id}`}>
-              <FiEdit className="text-indigo-500 hover:text-ungu cursor-pointer" />
-            </Link>
-            <LuTrash
-              onClick={async () => {
-                try {
-                  await deleteProduct({ id: product._id });
-                  toast.success(`${product.name} berhasil dihapus`);
-                } catch (error) {
-                  toast.error("Terjadi kesalahan");
-                }
-              }}
-              className="ml-7 text-gray-500 cursor-pointer hover:text-rose-500"
-            />
-          </div>
-        </div>
-      );
-    });
+    return <ProductList products={products} />;
   };
 
   const renderOptions = () => {
@@ -174,7 +131,6 @@ function Products() {
               navigate({
                 to: "/products",
               });
-              // setIsFromSearch(false);
             } else {
               navigate({
                 search: (prev) => ({ ...prev, name: e.target.value }),

@@ -77,7 +77,7 @@ function CreateProduct() {
           <input
             required
             type="number"
-            placeholder="Harga"
+            placeholder="Harga (tanpa titik & koma)"
             className="w-full border border-gray-200 p-3 rounded-lg my-2"
             {...form.register("price", {
               valueAsNumber: true,

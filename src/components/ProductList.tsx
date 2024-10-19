@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 
-function SearchResult({ products }: { products: ProductType[] }) {
+function ProductList({ products }: { products: ProductType[] }) {
   const deleteProduct = useMutation(api.products.deleteProduct);
 
   return products.map((product) => {
@@ -21,7 +21,13 @@ function SearchResult({ products }: { products: ProductType[] }) {
           className="w-[50px] h-[50px] object-cover rounded-full"
         />
         <p className="text-hitampudar text-sm font-semibold">{product.name}</p>
-        <p className="text-hitampudar text-sm">{product.price}</p>
+        <p className="text-hitampudar text-sm">
+          {new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            maximumFractionDigits: 0,
+          }).format(product.price)}
+        </p>
         <div className="text-lg flex justify-end">
           <Link to={`/products/edit/${product._id}`}>
             <FiEdit className="text-indigo-500 hover:text-ungu cursor-pointer" />
@@ -43,4 +49,4 @@ function SearchResult({ products }: { products: ProductType[] }) {
   });
 }
 
-export default SearchResult;
+export default ProductList;
