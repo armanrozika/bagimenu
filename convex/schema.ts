@@ -25,7 +25,11 @@ export default defineSchema({
     category_id: v.union(v.id("categories"), v.literal("ALL")),
   })
     .index("by_store", ["store_id"])
-    .index("by_category", ["category_id"]),
+    .index("by_category", ["category_id"])
+    .searchIndex("search_name", {
+      searchField: "name",
+      filterFields: ["store_id", "category_id"],
+    }),
   categories: defineTable({
     name: v.string(),
     store_id: v.id("stores"),

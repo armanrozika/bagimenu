@@ -100,7 +100,7 @@ export const updateStore = mutation({
 
 export const getStoresWithDefault = query({
   handler: async (ctx) => {
-    const identity = await authorizeUser(ctx, "No Auth: patch store");
+    const identity = await authorizeUser(ctx, "No Auth: get stores default");
     const user = await ctx.db
       .query("users")
       .withIndex("by_token", (q) => {
@@ -130,7 +130,10 @@ export const getStoresWithDefault = query({
 
 export const defaultStore = query({
   handler: async (ctx) => {
-    const identity = await authorizeUser(ctx, "No Auth: patch store");
+    const identity = await authorizeUser(
+      ctx,
+      "No Auth: get single default store"
+    );
     const user = await ctx.db
       .query("users")
       .withIndex("by_token", (q) => {
@@ -153,7 +156,7 @@ export const updateDefaultStore = mutation({
     id: v.id("stores"),
   },
   handler: async (ctx, args) => {
-    const identity = await authorizeUser(ctx, "No Auth: patch store");
+    const identity = await authorizeUser(ctx, "No Auth: patch default store");
     const user = await ctx.db
       .query("users")
       .withIndex("by_token", (q) => {

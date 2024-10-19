@@ -1,3 +1,5 @@
+import { Id } from "../../convex/_generated/dataModel";
+
 export enum RegisterType {
   Login,
   Signup,
@@ -33,4 +35,15 @@ export type CreateProductType = {
 
 export type CreateCategoryType = {
   name: string;
+};
+
+export type ProductType = {
+  _id: Id<"products">;
+  _creationTime: number;
+  name: string;
+  price: number;
+  is_active: boolean;
+  image_url: string;
+  store_id: Id<"stores">;
+  category_id: Id<"categories"> | "ALL";
 };

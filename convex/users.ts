@@ -51,5 +51,3 @@ export const get = query({
     }
   },
 });
-
-//PATCH user.default_store
