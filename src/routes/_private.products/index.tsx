@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useQuery as tanQuery } from "@tanstack/react-query";
 import { FiPlusSquare } from "react-icons/fi";
 import Select from "react-select";
 import { api } from "../../../convex/_generated/api";
 import NoData from "../../components/NoData";
 import LoadingLine from "../../components/LoadingLine";
-import { useQuery as dbQuery, usePaginatedQuery, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
 import { Id } from "../../../convex/_generated/dataModel";
 import ProductList from "../../components/ProductList";
+import { convexQuery } from "@convex-dev/react-query";
+import { useStableQuery } from "../../components/useStableQuery";
 
 type Filter = {
   name?: string;
@@ -30,23 +33,21 @@ function Products() {
   const navigate = useNavigate({ from: Route.fullPath });
   const { name } = Route.useSearch();
 
-  const user = dbQuery(api.users.get);
-  const categories = dbQuery(api.categories.get);
-
+  const user = useQuery(api.users.get);
+  const categories = useQuery(api.categories.get);
+  const itemsPerPage = 20;
   const {
     results: products,
     isLoading,
     loadMore,
     status,
-  } = usePaginatedQuery(
-    api.products.get,
-    { id: categoryId.value },
-    { initialNumItems: 20 }
-  );
+  } = useStableQuery(categoryId.value);
 
-  const searchResult = useQuery(api.products.searchProduct, {
-    searchParams: name ?? "",
-    categoryId: categoryId.value,
+  const { data: searchResult } = tanQuery({
+    ...convexQuery(api.products.searchProduct, {
+      searchParams: name ?? "",
+      categoryId: categoryId.value,
+    }),
   });
 
   const renderProduk = () => {
@@ -57,7 +58,7 @@ function Products() {
     if (products.length < 1 && !isLoading) {
       return <NoData text="Belum Ada Produk" />;
     }
-    if (name && !searchResult) return;
+
     if (name && searchResult) {
       return <ProductList products={searchResult} />;
     }
@@ -142,7 +143,7 @@ function Products() {
       <div className="max-h-[60vh] overflow-y-auto">{renderProduk()}</div>
       <div className="flex justify-center mt-5">
         <button
-          onClick={() => loadMore(20)}
+          onClick={() => loadMore(itemsPerPage)}
           disabled={status !== "CanLoadMore"}
           className="text-sm text-ungu border border-ungu rounded-full font-semibold px-8 py-1.5 hover:bg-indigo-50 transition disabled:cursor-not-allowed"
         >

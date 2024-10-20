@@ -52,9 +52,16 @@ function StoreFront() {
     if (!products && !isLoading) return;
     if (name && !searchResult) return;
     if (name && searchResult) {
-      return <StoreFrontList products={searchResult} />;
+      return (
+        <StoreFrontList
+          products={searchResult}
+          store={store_categories?.store!}
+        />
+      );
     }
-    return <StoreFrontList products={products} />;
+    return (
+      <StoreFrontList products={products} store={store_categories?.store!} />
+    );
   };
 
   const renderOptions = () => {

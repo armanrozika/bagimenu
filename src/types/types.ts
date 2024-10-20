@@ -47,3 +47,20 @@ export type ProductType = {
   store_id: Id<"stores">;
   category_id: Id<"categories"> | "ALL";
 };
+
+export type InvoiceType = {
+  store_id: Id<"stores">;
+  invoice_id: string;
+  product_name: string;
+  product_price: number;
+  is_success: boolean;
+};
+
+export type StoreType = {
+  _id: Id<"stores">;
+  _creationTime: number;
+  name: string;
+  url: string;
+  whatsapp: string;
+  owner_identifier: string;
+};

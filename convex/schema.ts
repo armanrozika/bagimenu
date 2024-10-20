@@ -35,4 +35,21 @@ export default defineSchema({
     name: v.string(),
     store_id: v.id("stores"),
   }).index("by_store", ["store_id"]),
+  invoices: defineTable({
+    invoice_id: v.string(),
+    product_name: v.string(),
+    product_price: v.number(),
+    is_success: v.boolean(),
+    store_id: v.id("stores"),
+    status: v.union(
+      v.literal("PAID"),
+      v.literal("CANCELED"),
+      v.literal("LEAD")
+    ),
+  }).index("by_store", ["store_id"]),
+  notifications: defineTable({
+    store_id: v.id("stores"),
+    invoice_id: v.string(),
+    is_read: v.boolean(),
+  }),
 });

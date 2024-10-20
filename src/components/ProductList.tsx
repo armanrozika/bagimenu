@@ -13,7 +13,7 @@ function ProductList({ products }: { products: ProductType[] }) {
     return (
       <div
         key={product._id}
-        className="grid grid-cols-4 gap-2 items-center p-3 border-b border-gray-100 transition hover:bg-gray-100 rounded-xl"
+        className="grid grid-cols-4 gap-2 items-center p-2 border-b border-gray-100 transition hover:bg-gray-100 rounded-xl"
       >
         <img
           src={product.image_url}

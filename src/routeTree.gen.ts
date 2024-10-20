@@ -20,8 +20,10 @@ import { Route as IndexImport } from './routes/index'
 import { Route as StoreStorenameImport } from './routes/store.$store_name'
 import { Route as PrivateStoresIndexImport } from './routes/_private.stores/index'
 import { Route as PrivateProductsIndexImport } from './routes/_private.products/index'
+import { Route as PrivateOrdersIndexImport } from './routes/_private.orders/index'
 import { Route as PrivateDashboardIndexImport } from './routes/_private.dashboard/index'
 import { Route as PrivateCategoriesIndexImport } from './routes/_private.categories/index'
+import { Route as PrivateAnalyticsIndexImport } from './routes/_private.analytics/index'
 import { Route as PrivateStoresCreateImport } from './routes/_private.stores/create'
 import { Route as PrivateProductsCreateImport } from './routes/_private.products/create'
 import { Route as PrivateStoresEditIdImport } from './routes/_private.stores/edit.$id'
@@ -74,6 +76,11 @@ const PrivateProductsIndexRoute = PrivateProductsIndexImport.update({
   getParentRoute: () => PrivateRoute,
 } as any)
 
+const PrivateOrdersIndexRoute = PrivateOrdersIndexImport.update({
+  path: '/orders/',
+  getParentRoute: () => PrivateRoute,
+} as any)
+
 const PrivateDashboardIndexRoute = PrivateDashboardIndexImport.update({
   path: '/dashboard/',
   getParentRoute: () => PrivateRoute,
@@ -81,6 +88,11 @@ const PrivateDashboardIndexRoute = PrivateDashboardIndexImport.update({
 
 const PrivateCategoriesIndexRoute = PrivateCategoriesIndexImport.update({
   path: '/categories/',
+  getParentRoute: () => PrivateRoute,
+} as any)
+
+const PrivateAnalyticsIndexRoute = PrivateAnalyticsIndexImport.update({
+  path: '/analytics/',
   getParentRoute: () => PrivateRoute,
 } as any)
 
@@ -171,6 +183,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateStoresCreateImport
       parentRoute: typeof PrivateImport
     }
+    '/_private/analytics/': {
+      id: '/_private/analytics/'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof PrivateAnalyticsIndexImport
+      parentRoute: typeof PrivateImport
+    }
     '/_private/categories/': {
       id: '/_private/categories/'
       path: '/categories'
@@ -183,6 +202,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof PrivateDashboardIndexImport
+      parentRoute: typeof PrivateImport
+    }
+    '/_private/orders/': {
+      id: '/_private/orders/'
+      path: '/orders'
+      fullPath: '/orders'
+      preLoaderRoute: typeof PrivateOrdersIndexImport
       parentRoute: typeof PrivateImport
     }
     '/_private/products/': {
@@ -221,8 +247,10 @@ declare module '@tanstack/react-router' {
 interface PrivateRouteChildren {
   PrivateProductsCreateRoute: typeof PrivateProductsCreateRoute
   PrivateStoresCreateRoute: typeof PrivateStoresCreateRoute
+  PrivateAnalyticsIndexRoute: typeof PrivateAnalyticsIndexRoute
   PrivateCategoriesIndexRoute: typeof PrivateCategoriesIndexRoute
   PrivateDashboardIndexRoute: typeof PrivateDashboardIndexRoute
+  PrivateOrdersIndexRoute: typeof PrivateOrdersIndexRoute
   PrivateProductsIndexRoute: typeof PrivateProductsIndexRoute
   PrivateStoresIndexRoute: typeof PrivateStoresIndexRoute
   PrivateProductsEditIdRoute: typeof PrivateProductsEditIdRoute
@@ -232,8 +260,10 @@ interface PrivateRouteChildren {
 const PrivateRouteChildren: PrivateRouteChildren = {
   PrivateProductsCreateRoute: PrivateProductsCreateRoute,
   PrivateStoresCreateRoute: PrivateStoresCreateRoute,
+  PrivateAnalyticsIndexRoute: PrivateAnalyticsIndexRoute,
   PrivateCategoriesIndexRoute: PrivateCategoriesIndexRoute,
   PrivateDashboardIndexRoute: PrivateDashboardIndexRoute,
+  PrivateOrdersIndexRoute: PrivateOrdersIndexRoute,
   PrivateProductsIndexRoute: PrivateProductsIndexRoute,
   PrivateStoresIndexRoute: PrivateStoresIndexRoute,
   PrivateProductsEditIdRoute: PrivateProductsEditIdRoute,
@@ -253,8 +283,10 @@ export interface FileRoutesByFullPath {
   '/store/$store_name': typeof StoreStorenameRoute
   '/products/create': typeof PrivateProductsCreateRoute
   '/stores/create': typeof PrivateStoresCreateRoute
+  '/analytics': typeof PrivateAnalyticsIndexRoute
   '/categories': typeof PrivateCategoriesIndexRoute
   '/dashboard': typeof PrivateDashboardIndexRoute
+  '/orders': typeof PrivateOrdersIndexRoute
   '/products': typeof PrivateProductsIndexRoute
   '/stores': typeof PrivateStoresIndexRoute
   '/products/edit/$id': typeof PrivateProductsEditIdRoute
@@ -271,8 +303,10 @@ export interface FileRoutesByTo {
   '/store/$store_name': typeof StoreStorenameRoute
   '/products/create': typeof PrivateProductsCreateRoute
   '/stores/create': typeof PrivateStoresCreateRoute
+  '/analytics': typeof PrivateAnalyticsIndexRoute
   '/categories': typeof PrivateCategoriesIndexRoute
   '/dashboard': typeof PrivateDashboardIndexRoute
+  '/orders': typeof PrivateOrdersIndexRoute
   '/products': typeof PrivateProductsIndexRoute
   '/stores': typeof PrivateStoresIndexRoute
   '/products/edit/$id': typeof PrivateProductsEditIdRoute
@@ -290,8 +324,10 @@ export interface FileRoutesById {
   '/store/$store_name': typeof StoreStorenameRoute
   '/_private/products/create': typeof PrivateProductsCreateRoute
   '/_private/stores/create': typeof PrivateStoresCreateRoute
+  '/_private/analytics/': typeof PrivateAnalyticsIndexRoute
   '/_private/categories/': typeof PrivateCategoriesIndexRoute
   '/_private/dashboard/': typeof PrivateDashboardIndexRoute
+  '/_private/orders/': typeof PrivateOrdersIndexRoute
   '/_private/products/': typeof PrivateProductsIndexRoute
   '/_private/stores/': typeof PrivateStoresIndexRoute
   '/_private/products/edit/$id': typeof PrivateProductsEditIdRoute
@@ -310,8 +346,10 @@ export interface FileRouteTypes {
     | '/store/$store_name'
     | '/products/create'
     | '/stores/create'
+    | '/analytics'
     | '/categories'
     | '/dashboard'
+    | '/orders'
     | '/products'
     | '/stores'
     | '/products/edit/$id'
@@ -327,8 +365,10 @@ export interface FileRouteTypes {
     | '/store/$store_name'
     | '/products/create'
     | '/stores/create'
+    | '/analytics'
     | '/categories'
     | '/dashboard'
+    | '/orders'
     | '/products'
     | '/stores'
     | '/products/edit/$id'
@@ -344,8 +384,10 @@ export interface FileRouteTypes {
     | '/store/$store_name'
     | '/_private/products/create'
     | '/_private/stores/create'
+    | '/_private/analytics/'
     | '/_private/categories/'
     | '/_private/dashboard/'
+    | '/_private/orders/'
     | '/_private/products/'
     | '/_private/stores/'
     | '/_private/products/edit/$id'
@@ -402,8 +444,10 @@ export const routeTree = rootRoute
       "children": [
         "/_private/products/create",
         "/_private/stores/create",
+        "/_private/analytics/",
         "/_private/categories/",
         "/_private/dashboard/",
+        "/_private/orders/",
         "/_private/products/",
         "/_private/stores/",
         "/_private/products/edit/$id",
@@ -433,12 +477,20 @@ export const routeTree = rootRoute
       "filePath": "_private.stores/create.tsx",
       "parent": "/_private"
     },
+    "/_private/analytics/": {
+      "filePath": "_private.analytics/index.tsx",
+      "parent": "/_private"
+    },
     "/_private/categories/": {
       "filePath": "_private.categories/index.tsx",
       "parent": "/_private"
     },
     "/_private/dashboard/": {
       "filePath": "_private.dashboard/index.tsx",
+      "parent": "/_private"
+    },
+    "/_private/orders/": {
+      "filePath": "_private.orders/index.tsx",
       "parent": "/_private"
     },
     "/_private/products/": {

@@ -8,6 +8,8 @@ import { IoAnalytics } from "react-icons/io5";
 import Icon from "./Icon";
 import { useClerk } from "@clerk/clerk-react";
 import { GoChecklist } from "react-icons/go";
+import { useQuery } from "convex/react";
+import { api } from "../../convex/_generated/api";
 
 function Sidebar({
   isOpen,
@@ -17,6 +19,16 @@ function Sidebar({
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const { signOut } = useClerk();
+  const notifications = useQuery(api.invoices.getNotification);
+
+  const notificationCount = () => {
+    if (!notifications) return;
+    if (notifications.length > 0) {
+      return notifications.length;
+    } else {
+      return "";
+    }
+  };
 
   return (
     <div
@@ -41,12 +53,12 @@ function Sidebar({
 
       <div className="pt-5 border-t border-gray-100">
         <Link
-          to="/dashboard"
+          to="/orders"
           className="relative flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md text-hitampudar hover:bg-ungupudar hover:text-ungu"
           onClick={() => setIsOpen(false)}
         >
           <div className="absolute flex items-center justify-center px-3 -translate-y-1/2 rounded-full top-1/2 right-3">
-            <p className="text-xs text-ungu">24</p>
+            <p className="text-xs text-ungu">{notificationCount()}</p>
           </div>
           <BsCart2 className="mr-3 text-xl" />
           Order
@@ -70,12 +82,12 @@ function Sidebar({
         </Link>
 
         <Link
-          to="/dashboard"
+          to="/analytics"
           className="flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md text-hitampudar hover:bg-ungupudar hover:text-ungu"
           onClick={() => setIsOpen(false)}
         >
           <IoAnalytics className="mr-3 text-xl" />
-          Analytics
+          Laporan
         </Link>
       </div>
 
