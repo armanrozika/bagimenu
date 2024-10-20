@@ -23,6 +23,7 @@ export default defineSchema({
     is_active: v.boolean(),
     image_url: v.string(),
     store_id: v.id("stores"),
+    notes: v.string(),
     category_id: v.union(v.id("categories"), v.literal("ALL")),
   })
     .index("by_store", ["store_id"])

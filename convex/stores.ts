@@ -15,16 +15,6 @@ export const add = mutation({
       .unique();
     if (!user) throw new Error("No User Found");
 
-    const stores = await ctx.db
-      .query("stores")
-      .withIndex("by_token", (q) => {
-        return q.eq("owner_identifier", identity.tokenIdentifier);
-      })
-      .collect();
-
-    if (user?.plan === "basic" && stores.length === 1) {
-      throw new Error("Plan basic Limit: add Store");
-    }
     //check if there is same store name
     const storeName = await ctx.db
       .query("stores")

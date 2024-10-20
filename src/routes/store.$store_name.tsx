@@ -1,11 +1,14 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { usePaginatedQuery, useQuery } from "convex/react";
+import { useQuery as tanQuery } from "@tanstack/react-query";
+import { useQuery } from "convex/react";
 import Select from "react-select";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 import { useState } from "react";
 import StoreFrontList from "../components/StoreFrontList";
 import { SpinnerPurple } from "../assets";
+import { usePublicStableQuery } from "../components/useStableQuery";
+import { convexQuery } from "@convex-dev/react-query";
 
 type Filter = {
   name?: string;
@@ -33,19 +36,17 @@ function StoreFront() {
     isLoading,
     loadMore,
     status,
-  } = usePaginatedQuery(
-    api.publicProduct.getProductByCategory,
-    { category_id: categoryId.value, store_url: store_name },
-    { initialNumItems: itemsPerPage }
-  );
+  } = usePublicStableQuery(categoryId.value, store_name);
 
   const store_categories = useQuery(api.publicProduct.getStoreDetail, {
     store_url: store_name,
   });
-  const searchResult = useQuery(api.publicProduct.searchProduct, {
-    searchParams: name ?? "",
-    categoryId: categoryId.value,
-    store_url: store_name,
+  const { data: searchResult } = tanQuery({
+    ...convexQuery(api.publicProduct.searchProduct, {
+      searchParams: name ?? "",
+      categoryId: categoryId.value,
+      store_url: store_name,
+    }),
   });
 
   const renderProducts = () => {
@@ -130,7 +131,7 @@ function StoreFront() {
           }}
         />
       </div>
-      {isLoading && status !== "LoadingMore" && (
+      {!products && isLoading && status !== "LoadingMore" && (
         <div className="w-[100px] mx-auto">
           <img src={SpinnerPurple} alt="" className="w-[40px] mx-auto" />
         </div>

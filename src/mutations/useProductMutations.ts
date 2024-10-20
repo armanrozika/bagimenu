@@ -59,6 +59,7 @@ export const useProductMutation = (
           price: formData.price,
           image_url: formData.image_url,
           category_id: formData.category_id as Id<"categories">,
+          notes: formData.notes,
         });
       }
       if (mutationType === MutationType.Patch) {
@@ -73,6 +74,7 @@ export const useProductMutation = (
             price: formData.price,
             image_url: formData.image_url,
             category_id: formData.category_id as Id<"categories">,
+            notes: formData.notes,
           },
         });
       }

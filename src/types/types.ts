@@ -31,6 +31,7 @@ export type CreateProductType = {
   price: number;
   image_url: string;
   category_id: string;
+  notes: string;
 };
 
 export type CreateCategoryType = {
@@ -46,6 +47,7 @@ export type ProductType = {
   image_url: string;
   store_id: Id<"stores">;
   category_id: Id<"categories"> | "ALL";
+  notes: string;
 };
 
 export type InvoiceType = {

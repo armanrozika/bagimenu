@@ -140,6 +140,12 @@ function EditProduct() {
                   valueAsNumber: true,
                 })}
               />
+              <textarea
+                {...form.register("notes")}
+                defaultValue={product.notes}
+                placeholder="Keterangan"
+                className="border border-gray-200 rounded-lg w-full h-20 p-3"
+              ></textarea>
               <div className="mt-2">
                 <p className="text-sm text-hitampudar mb-1">Kategori: </p>
                 <Select

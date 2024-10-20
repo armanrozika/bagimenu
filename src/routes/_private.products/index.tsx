@@ -96,7 +96,7 @@ function Products() {
         </Link>
       </div>
 
-      {isLoading && <LoadingLine />}
+      {!products && isLoading && <LoadingLine />}
 
       <div className="flex justify-between mt-2 mb-7 items-center">
         <Select

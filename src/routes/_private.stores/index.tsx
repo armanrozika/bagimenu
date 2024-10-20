@@ -15,7 +15,6 @@ export const Route = createFileRoute("/_private/stores/")({
   component: Toko,
 });
 function Toko() {
-  const { data: user } = useQuery({ ...convexQuery(api.users.get, {}) });
   const { data: stores } = useQuery({
     ...convexQuery(api.stores.getStoresWithDefault, {}),
   });
@@ -72,22 +71,6 @@ function Toko() {
     });
   };
 
-  const isDisabled = () => {
-    if (!user || !stores) return;
-    const disableCreate = user.plan === "basic" && stores.length === 1;
-    return disableCreate;
-  };
-
-  const renderProNotif = () => {
-    if (!user || !stores) return;
-    if (user.plan === "basic" && stores.length === 1) {
-      return (
-        <p className="text-sm text-gray-400 text-right mt-3 mr-5">
-          Upgrade ke Pro jika ingin menambah toko baru
-        </p>
-      );
-    }
-  };
   const renderOptions = () => {
     if (!stores || stores.length < 1) return;
     return stores;
@@ -126,7 +109,6 @@ function Toko() {
       <div className="flex items-center justify-between pb-3 mb-3 border-b border-gray-100">
         <h1 className="font-semibold text-hitampudar">Toko</h1>
         <Link
-          disabled={isDisabled()}
           to="/stores/create"
           className="flex items-center px-5 py-2 text-sm font-semibold transition border rounded-full border-ungu text-ungu hover:bg-indigo-50"
         >
@@ -136,16 +118,13 @@ function Toko() {
       </div>
 
       {stores === undefined && <LoadingLine />}
-      {user?.plan === "pro" && (
-        <div className="flex items-center">
-          <p className="mr-3 text-sm text-hitampudar">Sedang Dikelola:</p>
-          {renderSelect()}
-        </div>
-      )}
+
+      <div className="flex items-center">
+        <p className="mr-3 text-sm text-hitampudar">Sedang Dikelola:</p>
+        {renderSelect()}
+      </div>
 
       {renderToko()}
-
-      {renderProNotif()}
     </>
   );
 }

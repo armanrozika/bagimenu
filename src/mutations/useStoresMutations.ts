@@ -18,9 +18,17 @@ export const useStoreMutations = (
   const submitCreateForm: SubmitHandler<StoreCreateType> = async (formData) => {
     try {
       if (mutationType === MutationType.Create) {
+        if (formData.whatsapp[0] === "0") {
+          let newNums = formData.whatsapp.replace("0", "");
+          formData.whatsapp = newNums;
+        }
         await mutate(formData);
       }
       if (mutationType === MutationType.Patch) {
+        if (formData.whatsapp[0] === "0") {
+          let newNums = formData.whatsapp.replace("0", "");
+          formData.whatsapp = newNums;
+        }
         await patch({ id: id, formData: formData });
       }
       navigate({ to: "/stores" });
