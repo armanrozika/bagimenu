@@ -5,7 +5,6 @@ import { ProductType, StoreType } from "../types/types";
 import { FiZoomIn } from "react-icons/fi";
 import Modal from "./Modal";
 import { useState } from "react";
-import { Link } from "@tanstack/react-router";
 
 type PropsType = {
   products: ProductType[];

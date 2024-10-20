@@ -1,6 +1,5 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { internal } from "./_generated/api";
 import { authorizeUser } from "./helper/helper";
 
 export const add = mutation({
@@ -15,10 +14,6 @@ export const add = mutation({
     await ctx.db.insert("invoices", {
       ...args,
       status: "LEAD",
-    });
-    await ctx.runMutation(internal.notifications.add, {
-      store_id: args.store_id,
-      invoice_id: args.invoice_id,
     });
   },
 });
@@ -55,7 +50,7 @@ export const getNotification = query({
       })
       .unique();
     if (!user) throw new Error("No User Found");
-    const notifications = await ctx.db
+    const invoices = await ctx.db
       .query("invoices")
       .filter((q) => {
         return q.and(
@@ -65,14 +60,15 @@ export const getNotification = query({
       })
       .collect();
 
-    return notifications;
+    return invoices;
   },
 });
 
 //get invoices with date filter
-export const getNotificationToday = query({
+export const getInvoicesReport = query({
   args: {
     time: v.string(),
+    date: v.number(),
   },
   handler: async (ctx, args) => {
     const identity = await authorizeUser(ctx, "No Auth: get notifications");
@@ -83,33 +79,18 @@ export const getNotificationToday = query({
       })
       .unique();
     if (!user) throw new Error("No User Found");
-    const filterTime = () => {
-      if (args.time === "DAY") {
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        yesterday.setHours(0, 0, 0, 0);
-        return yesterday.toString();
-      }
-      if (args.time === "MONTH") {
-        const thisMonth = new Date();
-        thisMonth.setDate(thisMonth.getDate() - (thisMonth.getDate() - 1));
-        thisMonth.setHours(0, 0, 0, 0);
-        return thisMonth.toString();
-      }
-    };
-
-    const notifications = await ctx.db
+    const invoices = await ctx.db
       .query("invoices")
       .filter((q) => {
         return q.and(
           q.neq(q.field("status"), "LEAD"),
-          q.gt(q.field("_creationTime"), Date.parse(filterTime() as string)),
+          q.gt(q.field("_creationTime"), args.date),
           q.eq(q.field("store_id"), user.default_store)
         );
       })
       .collect();
 
-    return notifications;
+    return invoices;
   },
 });
 

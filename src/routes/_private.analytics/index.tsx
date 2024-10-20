@@ -12,10 +12,16 @@ export const Route = createFileRoute("/_private/analytics/")({
 });
 
 function Analytics() {
+  const day = new Date().setHours(0, 0, 0, 0);
+  const month = new Date();
+  month.setDate(month.getDate() - (month.getDate() - 1));
+  const hh = month.setHours(0, 0, 0, 0);
+
   const [time, setTime] = useState("DAY");
   const { data: invoices } = useQuery({
-    ...convexQuery(api.invoices.getNotificationToday, {
+    ...convexQuery(api.invoices.getInvoicesReport, {
       time: time,
+      date: time === "DAY" ? day : hh,
     }),
   });
 
