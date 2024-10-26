@@ -21,6 +21,7 @@ import type * as invoices from "../invoices.js";
 import type * as products from "../products.js";
 import type * as publicProduct from "../publicProduct.js";
 import type * as stores from "../stores.js";
+import type * as tags from "../tags.js";
 import type * as users from "../users.js";
 
 /**
@@ -38,6 +39,7 @@ declare const fullApi: ApiFromModules<{
   products: typeof products;
   publicProduct: typeof publicProduct;
   stores: typeof stores;
+  tags: typeof tags;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

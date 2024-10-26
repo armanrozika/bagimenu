@@ -32,6 +32,7 @@ export type CreateProductType = {
   image_url: string;
   category_id: string;
   notes: string;
+  tags: string[] | boolean[];
 };
 
 export type CreateCategoryType = {
@@ -65,4 +66,8 @@ export type StoreType = {
   url: string;
   whatsapp: string;
   owner_identifier: string;
+};
+
+export type TagType = {
+  name: string;
 };

@@ -2,6 +2,8 @@ import { v } from "convex/values";
 import { paginationOptsValidator } from "convex/server";
 import { query } from "./_generated/server";
 import { Id } from "./_generated/dataModel";
+import { asyncMap } from "convex-helpers";
+import { getAll } from "convex-helpers/server/relationships";
 
 export const getProductByCategory = query({
   args: {
@@ -104,5 +106,22 @@ export const searchProduct = query({
         .collect();
       return products;
     }
+  },
+});
+
+export const getProductsByTags = query({
+  args: {
+    tagIds: v.array(v.id("productTags")),
+  },
+  handler: async (ctx, args) => {
+    const productIds = new Set<Id<"products">>();
+    const tags = await asyncMap(args.tagIds, ctx.db.get);
+    tags.forEach((tag) => {
+      if (!tag) return;
+
+      productIds.add(tag?.product_id);
+    });
+    const products = await getAll(ctx.db, productIds);
+    return products;
   },
 });

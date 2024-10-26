@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { GrAppsRounded } from "react-icons/gr";
 import { AiOutlineProduct, AiOutlineShop } from "react-icons/ai";
-import { LiaSignOutAltSolid } from "react-icons/lia";
+import { LiaSignOutAltSolid, LiaTagsSolid } from "react-icons/lia";
 import { TfiClose } from "react-icons/tfi";
 import { BsCart2 } from "react-icons/bs";
 import { IoAnalytics } from "react-icons/io5";
@@ -80,7 +80,14 @@ function Sidebar({
           <GoChecklist className="mr-3 text-xl" />
           <p>Kategori</p>
         </Link>
-
+        <Link
+          to="/tags"
+          className="flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md cursor-pointer text-hitampudar hover:bg-ungupudar hover:text-ungu"
+          onClick={() => setIsOpen(false)}
+        >
+          <LiaTagsSolid className="mr-3 text-xl" />
+          <p>Tags</p>
+        </Link>
         <Link
           to="/analytics"
           className="flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md text-hitampudar hover:bg-ungupudar hover:text-ungu"

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { LuCheckSquare, LuTrash } from "react-icons/lu";
+import { LuTrash } from "react-icons/lu";
 import { FiEdit } from "react-icons/fi";
 import { api } from "../../../convex/_generated/api";
 import { convexQuery } from "@convex-dev/react-query";
@@ -10,6 +10,7 @@ import NoData from "../../components/NoData";
 import { useCategoryMutations } from "../../mutations/useCategoyMutations";
 import toast from "react-hot-toast";
 import { useMutation } from "convex/react";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 
 export const Route = createFileRoute("/_private/categories/")({
   component: Categories,
@@ -80,7 +81,7 @@ function Categories() {
           className={`border borger-gray-200 p-5 rounded-xl flex justify-between items-center mb-3 hover:border-ungu transition relative`}
         >
           {category._id === activeInput.id && renderForm()}
-          <p className="px-3 py-2">{category.name}</p>
+          <p className="px-3 py-2 text-hitampudar">{category.name}</p>
           <div className="flex items-center">
             <FiEdit
               className="text-indigo-500 hover:text-ungu cursor-pointer"
@@ -116,8 +117,7 @@ function Categories() {
         <form
           onSubmit={async (e) => {
             e.preventDefault();
-            const aio = form.handleSubmit(submitAdd);
-            await aio();
+            await form.handleSubmit(submitAdd)();
             form.reset();
           }}
           className="flex justify-end items-center mt-5"
@@ -133,7 +133,7 @@ function Categories() {
             type="submit"
             className="text-sm flex items-center border border-ungu px-5 py-1.5 text-ungu font-semibold rounded-full hover:bg-gray-100 transition"
           >
-            <LuCheckSquare className="mr-2 font-semibold" />
+            <IoMdCheckmarkCircleOutline className="mr-2 font-bold text-lg" />
             Tambah
           </button>
         </form>

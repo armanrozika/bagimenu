@@ -2,6 +2,7 @@ import { v } from "convex/values";
 import { paginationOptsValidator } from "convex/server";
 import { mutation, query } from "./_generated/server";
 import { authorizeUser } from "./helper/helper";
+import { Id } from "./_generated/dataModel";
 
 export const get = query({
   args: {
@@ -59,6 +60,7 @@ export const add = mutation({
     image_url: v.string(),
     category_id: v.union(v.id("categories"), v.literal("ALL")),
     notes: v.string(),
+    tag_ids: v.array(v.id("tags")),
   },
   handler: async (ctx, args) => {
     const identity = await authorizeUser(ctx, "No Auth: add products");
@@ -70,7 +72,7 @@ export const add = mutation({
       .unique();
     if (!user) throw new Error("No User Found");
     if (user.default_store) {
-      await ctx.db.insert("products", {
+      const product = await ctx.db.insert("products", {
         name: args.name,
         price: args.price,
         is_active: true,
@@ -79,6 +81,15 @@ export const add = mutation({
         category_id: args.category_id,
         notes: args.notes,
       });
+      const promises: Promise<Id<"productTags">>[] = [];
+      args.tag_ids.forEach((tag_id) => {
+        const inserts = ctx.db.insert("productTags", {
+          tag_id: tag_id,
+          product_id: product,
+        });
+        promises.push(inserts);
+      });
+      await Promise.all(promises);
     }
   },
 });

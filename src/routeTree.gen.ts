@@ -18,6 +18,7 @@ import { Route as LoginImport } from './routes/login'
 import { Route as PrivateImport } from './routes/_private'
 import { Route as IndexImport } from './routes/index'
 import { Route as StoreStorenameImport } from './routes/store.$store_name'
+import { Route as PrivateTagsIndexImport } from './routes/_private.tags/index'
 import { Route as PrivateStoresIndexImport } from './routes/_private.stores/index'
 import { Route as PrivateProductsIndexImport } from './routes/_private.products/index'
 import { Route as PrivateOrdersIndexImport } from './routes/_private.orders/index'
@@ -64,6 +65,11 @@ const IndexRoute = IndexImport.update({
 const StoreStorenameRoute = StoreStorenameImport.update({
   path: '/store/$store_name',
   getParentRoute: () => rootRoute,
+} as any)
+
+const PrivateTagsIndexRoute = PrivateTagsIndexImport.update({
+  path: '/tags/',
+  getParentRoute: () => PrivateRoute,
 } as any)
 
 const PrivateStoresIndexRoute = PrivateStoresIndexImport.update({
@@ -225,6 +231,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateStoresIndexImport
       parentRoute: typeof PrivateImport
     }
+    '/_private/tags/': {
+      id: '/_private/tags/'
+      path: '/tags'
+      fullPath: '/tags'
+      preLoaderRoute: typeof PrivateTagsIndexImport
+      parentRoute: typeof PrivateImport
+    }
     '/_private/products/edit/$id': {
       id: '/_private/products/edit/$id'
       path: '/products/edit/$id'
@@ -253,6 +266,7 @@ interface PrivateRouteChildren {
   PrivateOrdersIndexRoute: typeof PrivateOrdersIndexRoute
   PrivateProductsIndexRoute: typeof PrivateProductsIndexRoute
   PrivateStoresIndexRoute: typeof PrivateStoresIndexRoute
+  PrivateTagsIndexRoute: typeof PrivateTagsIndexRoute
   PrivateProductsEditIdRoute: typeof PrivateProductsEditIdRoute
   PrivateStoresEditIdRoute: typeof PrivateStoresEditIdRoute
 }
@@ -266,6 +280,7 @@ const PrivateRouteChildren: PrivateRouteChildren = {
   PrivateOrdersIndexRoute: PrivateOrdersIndexRoute,
   PrivateProductsIndexRoute: PrivateProductsIndexRoute,
   PrivateStoresIndexRoute: PrivateStoresIndexRoute,
+  PrivateTagsIndexRoute: PrivateTagsIndexRoute,
   PrivateProductsEditIdRoute: PrivateProductsEditIdRoute,
   PrivateStoresEditIdRoute: PrivateStoresEditIdRoute,
 }
@@ -289,6 +304,7 @@ export interface FileRoutesByFullPath {
   '/orders': typeof PrivateOrdersIndexRoute
   '/products': typeof PrivateProductsIndexRoute
   '/stores': typeof PrivateStoresIndexRoute
+  '/tags': typeof PrivateTagsIndexRoute
   '/products/edit/$id': typeof PrivateProductsEditIdRoute
   '/stores/edit/$id': typeof PrivateStoresEditIdRoute
 }
@@ -309,6 +325,7 @@ export interface FileRoutesByTo {
   '/orders': typeof PrivateOrdersIndexRoute
   '/products': typeof PrivateProductsIndexRoute
   '/stores': typeof PrivateStoresIndexRoute
+  '/tags': typeof PrivateTagsIndexRoute
   '/products/edit/$id': typeof PrivateProductsEditIdRoute
   '/stores/edit/$id': typeof PrivateStoresEditIdRoute
 }
@@ -330,6 +347,7 @@ export interface FileRoutesById {
   '/_private/orders/': typeof PrivateOrdersIndexRoute
   '/_private/products/': typeof PrivateProductsIndexRoute
   '/_private/stores/': typeof PrivateStoresIndexRoute
+  '/_private/tags/': typeof PrivateTagsIndexRoute
   '/_private/products/edit/$id': typeof PrivateProductsEditIdRoute
   '/_private/stores/edit/$id': typeof PrivateStoresEditIdRoute
 }
@@ -352,6 +370,7 @@ export interface FileRouteTypes {
     | '/orders'
     | '/products'
     | '/stores'
+    | '/tags'
     | '/products/edit/$id'
     | '/stores/edit/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -371,6 +390,7 @@ export interface FileRouteTypes {
     | '/orders'
     | '/products'
     | '/stores'
+    | '/tags'
     | '/products/edit/$id'
     | '/stores/edit/$id'
   id:
@@ -390,6 +410,7 @@ export interface FileRouteTypes {
     | '/_private/orders/'
     | '/_private/products/'
     | '/_private/stores/'
+    | '/_private/tags/'
     | '/_private/products/edit/$id'
     | '/_private/stores/edit/$id'
   fileRoutesById: FileRoutesById
@@ -450,6 +471,7 @@ export const routeTree = rootRoute
         "/_private/orders/",
         "/_private/products/",
         "/_private/stores/",
+        "/_private/tags/",
         "/_private/products/edit/$id",
         "/_private/stores/edit/$id"
       ]
@@ -499,6 +521,10 @@ export const routeTree = rootRoute
     },
     "/_private/stores/": {
       "filePath": "_private.stores/index.tsx",
+      "parent": "/_private"
+    },
+    "/_private/tags/": {
+      "filePath": "_private.tags/index.tsx",
       "parent": "/_private"
     },
     "/_private/products/edit/$id": {

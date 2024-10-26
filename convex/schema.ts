@@ -53,4 +53,12 @@ export default defineSchema({
     invoice_id: v.string(),
     is_read: v.boolean(),
   }),
+  tags: defineTable({
+    name: v.string(),
+    store_id: v.id("stores"),
+  }).index("by_store", ["store_id"]),
+  productTags: defineTable({
+    tag_id: v.id("tags"),
+    product_id: v.id("products"),
+  }),
 });

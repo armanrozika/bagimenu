@@ -54,12 +54,14 @@ export const useProductMutation = (
   const submitData: SubmitHandler<CreateProductType> = async (formData) => {
     try {
       if (mutationType === MutationType.Create) {
+        const tags = formData.tags.filter((tag) => tag !== false);
         await addProduct({
           name: formData.name,
           price: formData.price,
           image_url: formData.image_url,
           category_id: formData.category_id as Id<"categories">,
           notes: formData.notes,
+          tag_ids: tags as Id<"tags">[],
         });
       }
       if (mutationType === MutationType.Patch) {

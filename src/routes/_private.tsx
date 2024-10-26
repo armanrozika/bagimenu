@@ -35,9 +35,8 @@ function PrivateWrapper() {
         </div>
         <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
         <div className="w-full">
-          <div className="bg-ungu text-white p-3 font-semibold flex items-center">
+          <div className="bg-ungu text-white p-3 font-semibold flex items-center min-h-[48px]">
             <IoStorefrontOutline className="mr-2 text-xl" />
-
             <p>{defaultStore?.name}</p>
           </div>
 
