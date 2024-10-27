@@ -32,7 +32,7 @@ function Sidebar({
 
   return (
     <div
-      className={`min-w-[90%] lg:min-w-[280px] bg-white z-20 fixed top-0 lg:static ${isOpen ? "left-0" : "-left-full"} border-r border-gray-100 h-screen flex flex-col p-6 duration-300 ease-in-out`}
+      className={`min-w-[95%] lg:min-w-[280px] bg-white z-20 fixed top-0 lg:static ${isOpen ? "left-0" : "-left-full"} border-r border-gray-100 h-screen flex flex-col p-6 duration-300 ease-in-out`}
     >
       <TfiClose
         className="absolute lg:hidden top-5 right-5"
@@ -121,14 +121,14 @@ function Sidebar({
         </div>
       </div>
 
-      <div className="absolute left-5 bottom-20  text-sm p-7 rounded-2xl border border-gray-200 w-[240px] mx-auto">
+      {/* <div className="absolute left-5 bottom-20  text-sm p-7 rounded-2xl border border-gray-200 w-[240px] mx-auto">
         <p className="text-hitampudar">
           Pakai domain sendiri biar lebih keren!
         </p>
         <button className="w-full py-2 mt-3 text-sm text-white bg-ungu">
-          Upgrade Pro
+          Beli Domain
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }

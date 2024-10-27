@@ -11,6 +11,7 @@ import { Id } from "../../../convex/_generated/dataModel";
 import ProductList from "../../components/ProductList";
 import { convexQuery } from "@convex-dev/react-query";
 import { useStableQuery } from "../../components/useStableQuery";
+import { ITEMS_PER_PAGE } from "../../constants/constants";
 
 type Filter = {
   name?: string;
@@ -35,7 +36,6 @@ function Products() {
 
   const user = useQuery(api.users.get);
   const categories = useQuery(api.categories.get);
-  const itemsPerPage = 20;
   const {
     results: products,
     isLoading,
@@ -96,12 +96,12 @@ function Products() {
         </Link>
       </div>
 
-      {!products && isLoading && <LoadingLine />}
+      {isLoading && <LoadingLine />}
 
       <div className="flex justify-between mt-2 mb-7 items-center">
         <Select
           options={renderOptions()}
-          className="w-1/3 text-sm"
+          className="w-1/2 lg:w-1/3"
           defaultValue={{ value: "ALL", label: "All" }}
           value={categoryId}
           //@ts-ignore
@@ -125,7 +125,7 @@ function Products() {
         <input
           type="text"
           placeholder="Cari Nama Produk"
-          className="border border-gray-200 rounded-lg py-2 px-3 w-1/3"
+          className="border border-gray-200 rounded-lg py-1.5 px-3 w-1/2 ml-2 lg:w-1/3"
           defaultValue={name}
           onChange={(e) => {
             if (!e.target.value) {
@@ -143,7 +143,7 @@ function Products() {
       <div className="max-h-[60vh] overflow-y-auto">{renderProduk()}</div>
       <div className="flex justify-center mt-5">
         <button
-          onClick={() => loadMore(itemsPerPage)}
+          onClick={() => loadMore(ITEMS_PER_PAGE)}
           disabled={status !== "CanLoadMore"}
           className="text-sm text-ungu border border-ungu rounded-full font-semibold px-8 py-1.5 hover:bg-indigo-50 transition disabled:cursor-not-allowed"
         >

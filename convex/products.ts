@@ -49,7 +49,20 @@ export const getProduct = query({
   args: { id: v.id("products") },
   handler: async (ctx, args) => {
     const product = await ctx.db.get(args.id);
-    return product;
+    if (!product) return;
+    const productTags = await ctx.db
+      .query("productTags")
+      .withIndex("by_productId", (q) => {
+        return q.eq("product_id", product?._id);
+      })
+      .collect();
+    const tagsIds = productTags.map((tag) => {
+      return tag.tag_id;
+    });
+    return {
+      ...product,
+      tags: tagsIds,
+    };
   },
 });
 
@@ -97,6 +110,7 @@ export const add = mutation({
 export const patch = mutation({
   args: {
     id: v.id("products"),
+    tag_ids: v.array(v.id("tags")),
     formData: v.object({
       name: v.string(),
       price: v.number(),
@@ -119,6 +133,29 @@ export const patch = mutation({
       throw new Error("default_store Don't Match: patch product");
     }
     await ctx.db.patch(args.id, args.formData);
+    const productTags = await ctx.db
+      .query("productTags")
+      .withIndex("by_productId", (q) => {
+        return q.eq("product_id", product?._id);
+      })
+      .collect();
+    const promises: Promise<void>[] = [];
+    productTags.forEach((productTag) => {
+      const inserts = ctx.db.delete(productTag._id);
+      promises.push(inserts);
+    });
+    await Promise.all(promises);
+
+    //add new one
+    const promisesAdd: Promise<Id<"productTags">>[] = [];
+    args.tag_ids.forEach((tag_id) => {
+      const inserts = ctx.db.insert("productTags", {
+        tag_id: tag_id,
+        product_id: args.id,
+      });
+      promisesAdd.push(inserts);
+    });
+    await Promise.all(promises);
   },
 });
 

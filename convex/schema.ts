@@ -60,5 +60,7 @@ export default defineSchema({
   productTags: defineTable({
     tag_id: v.id("tags"),
     product_id: v.id("products"),
-  }),
+  })
+    .index("by_productId", ["product_id"])
+    .index("tag_id", ["tag_id"]),
 });

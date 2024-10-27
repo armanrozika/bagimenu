@@ -76,6 +76,28 @@ export const get = query({
   },
 });
 
+export const getPublicTag = query({
+  args: {
+    store_url: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const store = await ctx.db
+      .query("stores")
+      .withIndex("by_url", (q) => {
+        return q.eq("url", args.store_url);
+      })
+      .unique();
+    if (!store) return;
+    const tags = await ctx.db
+      .query("tags")
+      .withIndex("by_store", (q) => {
+        return q.eq("store_id", store?._id);
+      })
+      .collect();
+    return tags;
+  },
+});
+
 export const deleteTag = mutation({
   args: { tag_id: v.id("tags") },
   handler: async (ctx, args) => {

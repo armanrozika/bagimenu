@@ -82,7 +82,7 @@ function Toko() {
     // return value;
     return (
       <Select
-        className="text-sm w-1/4"
+        className="w-1/4"
         options={renderOptions()}
         defaultValue={value}
         //@ts-ignore

@@ -9,6 +9,8 @@ import StoreFrontList from "../components/StoreFrontList";
 import { SpinnerPurple } from "../assets";
 import { usePublicStableQuery } from "../components/useStableQuery";
 import { convexQuery } from "@convex-dev/react-query";
+import { ITEMS_PER_PAGE } from "../constants/constants";
+import { CiCircleChevDown } from "react-icons/ci";
 
 type Filter = {
   name?: string;
@@ -23,10 +25,14 @@ export const Route = createFileRoute("/store/$store_name")({
 });
 
 function StoreFront() {
-  const { name } = Route.useSearch();
   const { store_name } = Route.useParams();
+  const tags = useQuery(api.tags.getPublicTag, {
+    store_url: store_name,
+  });
+  const { name } = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
-  const itemsPerPage = 20;
+  const [tagIsVisible, setTagIsVisible] = useState(false);
+  const [tagIds, setTagIds] = useState<string[]>([]);
   const [categoryId, setCategoryId] = useState<{
     value: Id<"categories"> | "ALL";
     label: string;
@@ -49,9 +55,56 @@ function StoreFront() {
     }),
   });
 
+  const { data: productsByTags, isLoading: load } = tanQuery({
+    ...convexQuery(api.publicProduct.getProductsByTags, {
+      tagIds: tagIds as Id<"tags">[],
+    }),
+  });
+
+  const renderTags = () => {
+    if (!tags) return;
+    return tags.map((tag) => {
+      return (
+        <div key={tag._id} className="inline-block mr-3 items-center">
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id={tag._id}
+              className="mr-1"
+              value={tag._id}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setTagIds((prev) => {
+                    return [...prev, e.target.value];
+                  });
+                } else {
+                  const newTags = tagIds.filter(
+                    (tag) => tag !== e.target.value
+                  );
+                  setTagIds(newTags);
+                }
+              }}
+            />
+            <label
+              htmlFor={tag._id}
+              className="cursor-pointer text-sm text-hitampudar"
+            >
+              {tag.name}
+            </label>
+          </div>
+        </div>
+      );
+    });
+  };
+
   const renderProducts = () => {
     if (!products && !isLoading) return;
     if (name && !searchResult) return;
+    if (tagIds.length > 0 && load) return;
+    if (tagIds.length > 0 && productsByTags) {
+      const ff = productsByTags.filter((product) => product !== null);
+      return <StoreFrontList products={ff} store={store_categories?.store!} />;
+    }
     if (name && searchResult) {
       return (
         <StoreFrontList
@@ -89,10 +142,10 @@ function StoreFront() {
           {store_categories?.store?.name.toUpperCase()}
         </p>
       </div>
-      <div className="flex justify-between mt-10 mb-7 items-center max-w-[1100px] mx-auto p-2">
+      <div className="flex justify-between lg:mt-5 items-center px-3 lg:px-10 max-w-[1200px] mx-auto p-2">
         <Select
           options={renderOptions()}
-          className="w-1/2 lg:w-1/3 text-sm"
+          className="w-1/2 lg:w-1/3"
           defaultValue={{ value: "ALL", label: "All" }}
           value={categoryId}
           //@ts-ignore
@@ -131,17 +184,34 @@ function StoreFront() {
           }}
         />
       </div>
+
       {!products && isLoading && status !== "LoadingMore" && (
         <div className="w-[100px] mx-auto">
           <img src={SpinnerPurple} alt="" className="w-[40px] mx-auto" />
         </div>
       )}
-      <div className="max-w-[1200px] mx-auto grid grid-cols-2 lg:grid-cols-5 gap-2 lg:gap-6 p-2 lg:p-10">
+
+      <div className="max-w-[1200px] mx-auto px-3 lg:px-10  rounded-xl">
+        <div
+          className="flex items-center cursor-pointer bg-indigo-100 rounded-t-lg p-3"
+          onClick={() => setTagIsVisible(!tagIsVisible)}
+        >
+          <p className="text-ungu font-semibold text-sm">Tags </p>
+          <CiCircleChevDown className="ml-2 font-bold text-xl text-ungu" />
+        </div>
+        <div
+          className={`transition-all ${tagIsVisible ? "h-auto p-3" : "h-0 p-0"} overflow-hidden bg-white rounded-b-lg`}
+        >
+          {renderTags()}
+        </div>
+      </div>
+
+      <div className="max-w-[1200px] mx-auto mt-3 grid grid-cols-2 lg:grid-cols-5 gap-2 lg:gap-6 p-2 lg:px-10">
         {renderProducts()}
       </div>
       <div className="flex justify-center">
         <button
-          onClick={() => loadMore(itemsPerPage)}
+          onClick={() => loadMore(ITEMS_PER_PAGE)}
           disabled={status !== "CanLoadMore"}
           className="border border-orange-500 w-[200px] py-2 my-5 rounded-full text-orange-500 font-semibold text-sm bg-white"
         >

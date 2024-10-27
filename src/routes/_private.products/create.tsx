@@ -67,7 +67,7 @@ function CreateProduct() {
     <form onSubmit={form.handleSubmit(submitData)}>
       <BackTitle backTo="/products" title="Tambah Produk" />
       <div className="border border-gray-100 rounded-2xl">
-        <div className="grid grid-cols-2 gap-10">
+        <div className="lg:grid grid-cols-2 gap-10">
           <div className="p-7 relative">
             <img
               src={imgUrl || "https://placehold.co/100x100?text=Gambar"}
@@ -120,7 +120,7 @@ function CreateProduct() {
               <Select
                 required
                 options={renderOptions()}
-                className=" text-sm"
+                className=""
                 defaultValue={{ value: "ALL", label: "All" }}
                 //@ts-ignore
                 theme={(theme) => ({

@@ -69,8 +69,11 @@ export const useProductMutation = (
         //if that's the case, it will not trigger handleFileChange
         //so we need to read image_url from the state
         formData.image_url = imgUrl;
+        const tags = formData.tags.filter((tag) => tag !== false);
+
         await updateProduct({
           id: id,
+          tag_ids: tags as Id<"tags">[],
           formData: {
             name: formData.name,
             price: formData.price,
