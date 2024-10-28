@@ -28,7 +28,7 @@ function PrivateWrapper() {
     return (
       <div className="flex bg-[#f7f7f7] min-h-[100vh]">
         <div
-          className="fixed flex items-center justify-between z-10 w-full p-4 bg-white border-b border-gray-100 lg:hidden top- left-0"
+          className="fixed flex shadow-sm items-center justify-between z-10 w-full p-4 bg-white border-b border-gray-100 lg:hidden top- left-0"
           onClick={() => setIsOpen(true)}
         >
           <CiMenuFries />
@@ -36,13 +36,13 @@ function PrivateWrapper() {
         </div>
         <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
         <div className="w-full">
-          <div className="bg-ungu text-white p-3 font-semibold flex items-center min-h-[48px]">
+          <div className="bg-ungu text-white p-3 font-semibold hidden lg:flex items-center min-h-[48px]">
             <IoStorefrontOutline className="mr-2 text-xl" />
             <p>{defaultStore?.name}</p>
           </div>
 
-          <div className="p-5 lg:p-16 max-w-[1200px] mx-auto">
-            <div className="bg-white p-5 lg:p-10 rounded-3xl lg:mt-0">
+          <div className="p-3 lg:p-16 max-w-[1200px] mx-auto">
+            <div className="bg-white p-5 lg:p-10 rounded-xl lg:rounded-3xl mt-[55px] lg:mt-0">
               <Outlet />
             </div>
           </div>
