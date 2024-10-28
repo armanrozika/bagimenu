@@ -18,8 +18,8 @@ function CreateToko() {
     <div>
       <BackTitle backTo="/stores" title="Tambah Toko" />
       <form onSubmit={storeForm.handleSubmit(submitCreateForm)}>
-        <div className="grid grid-cols-2 gap-7">
-          <div className="flex items-center w-full mr-5 border border-gray-200 rounded-lg bg-indigo-50">
+        <div className="lg:grid grid-cols-2 gap-7">
+          <div className="lg:flex items-center w-full mr-5 border border-gray-200 rounded-lg bg-indigo-50">
             <p className="px-4 text-hitampudar">https://bagimenu.com/</p>
             <input
               {...storeForm.register("url")}
@@ -35,7 +35,7 @@ function CreateToko() {
               required
               type="text"
               placeholder="Nama Toko"
-              className="w-full p-3 border border-gray-200 rounded-lg"
+              className="w-full p-3 border border-gray-200 rounded-lg my-3 lg:my-0"
             />
           </div>
 

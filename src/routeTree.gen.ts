@@ -16,6 +16,7 @@ import { Route as SsoCallbackImport } from './routes/sso-callback'
 import { Route as SsoCallbaccImport } from './routes/sso-callbacc'
 import { Route as LoginImport } from './routes/login'
 import { Route as PrivateImport } from './routes/_private'
+import { Route as StoreurlImport } from './routes/$store_url'
 import { Route as IndexImport } from './routes/index'
 import { Route as StoreStorenameImport } from './routes/store.$store_name'
 import { Route as PrivateTagsIndexImport } from './routes/_private.tags/index'
@@ -54,6 +55,11 @@ const LoginRoute = LoginImport.update({
 
 const PrivateRoute = PrivateImport.update({
   id: '/_private',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const StoreurlRoute = StoreurlImport.update({
+  path: '/$store_url',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -131,6 +137,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/$store_url': {
+      id: '/$store_url'
+      path: '/$store_url'
+      fullPath: '/$store_url'
+      preLoaderRoute: typeof StoreurlImport
       parentRoute: typeof rootRoute
     }
     '/_private': {
@@ -290,6 +303,7 @@ const PrivateRouteWithChildren =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$store_url': typeof StoreurlRoute
   '': typeof PrivateRouteWithChildren
   '/login': typeof LoginRoute
   '/sso-callbacc': typeof SsoCallbaccRoute
@@ -311,6 +325,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$store_url': typeof StoreurlRoute
   '': typeof PrivateRouteWithChildren
   '/login': typeof LoginRoute
   '/sso-callbacc': typeof SsoCallbaccRoute
@@ -333,6 +348,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/$store_url': typeof StoreurlRoute
   '/_private': typeof PrivateRouteWithChildren
   '/login': typeof LoginRoute
   '/sso-callbacc': typeof SsoCallbaccRoute
@@ -356,6 +372,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/$store_url'
     | ''
     | '/login'
     | '/sso-callbacc'
@@ -376,6 +393,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$store_url'
     | ''
     | '/login'
     | '/sso-callbacc'
@@ -396,6 +414,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/$store_url'
     | '/_private'
     | '/login'
     | '/sso-callbacc'
@@ -418,6 +437,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  StoreurlRoute: typeof StoreurlRoute
   PrivateRoute: typeof PrivateRouteWithChildren
   LoginRoute: typeof LoginRoute
   SsoCallbaccRoute: typeof SsoCallbaccRoute
@@ -428,6 +448,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  StoreurlRoute: StoreurlRoute,
   PrivateRoute: PrivateRouteWithChildren,
   LoginRoute: LoginRoute,
   SsoCallbaccRoute: SsoCallbaccRoute,
@@ -449,6 +470,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/$store_url",
         "/_private",
         "/login",
         "/sso-callbacc",
@@ -459,6 +481,9 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/$store_url": {
+      "filePath": "$store_url.tsx"
     },
     "/_private": {
       "filePath": "_private.tsx",

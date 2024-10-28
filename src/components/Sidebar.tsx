@@ -1,15 +1,15 @@
 import { Link } from "@tanstack/react-router";
-import { GrAppsRounded } from "react-icons/gr";
+// import { GrAppsRounded } from "react-icons/gr";
 import { AiOutlineProduct, AiOutlineShop } from "react-icons/ai";
 import { LiaSignOutAltSolid, LiaTagsSolid } from "react-icons/lia";
 import { TfiClose } from "react-icons/tfi";
-import { BsCart2 } from "react-icons/bs";
-import { IoAnalytics } from "react-icons/io5";
+// import { BsCart2 } from "react-icons/bs";
+// import { IoAnalytics } from "react-icons/io5";
 import Icon from "./Icon";
 import { useClerk } from "@clerk/clerk-react";
 import { GoChecklist } from "react-icons/go";
-import { useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
+// import { useQuery } from "convex/react";
+// import { api } from "../../convex/_generated/api";
 
 function Sidebar({
   isOpen,
@@ -19,16 +19,16 @@ function Sidebar({
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const { signOut } = useClerk();
-  const notifications = useQuery(api.invoices.getNotification);
+  // const notifications = useQuery(api.invoices.getNotification);
 
-  const notificationCount = () => {
-    if (!notifications) return;
-    if (notifications.length > 0) {
-      return notifications.length;
-    } else {
-      return "";
-    }
-  };
+  // const notificationCount = () => {
+  //   if (!notifications) return;
+  //   if (notifications.length > 0) {
+  //     return notifications.length;
+  //   } else {
+  //     return "";
+  //   }
+  // };
 
   return (
     <div
@@ -41,18 +41,25 @@ function Sidebar({
       <div className="mx-auto mt-5 mb-7">
         <Icon />
       </div>
-
       <Link
+        to="/stores"
+        className="flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md cursor-pointer text-hitampudar hover:bg-ungupudar hover:text-ungu"
+        onClick={() => setIsOpen(false)}
+      >
+        <AiOutlineShop className="mr-3 text-xl" />
+        <p>Toko</p>
+      </Link>
+      {/* <Link
         className="flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md text-hitampudar hover:bg-ungupudar hover:text-ungu"
         to="/dashboard"
         onClick={() => setIsOpen(false)}
       >
         <GrAppsRounded className="mr-3 text-xl" />
         Dashboard
-      </Link>
+      </Link> */}
 
       <div className="pt-5 border-t border-gray-100">
-        <Link
+        {/* <Link
           to="/orders"
           className="relative flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md text-hitampudar hover:bg-ungupudar hover:text-ungu"
           onClick={() => setIsOpen(false)}
@@ -62,7 +69,7 @@ function Sidebar({
           </div>
           <BsCart2 className="mr-3 text-xl" />
           Order
-        </Link>
+        </Link> */}
 
         <Link
           to="/products"
@@ -88,26 +95,17 @@ function Sidebar({
           <LiaTagsSolid className="mr-3 text-xl" />
           <p>Tags</p>
         </Link>
-        <Link
+        {/* <Link
           to="/analytics"
           className="flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md text-hitampudar hover:bg-ungupudar hover:text-ungu"
           onClick={() => setIsOpen(false)}
         >
           <IoAnalytics className="mr-3 text-xl" />
           Laporan
-        </Link>
+        </Link> */}
       </div>
 
       <div className="pt-5 mt-5 border-t border-gray-100">
-        <Link
-          to="/stores"
-          className="flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md cursor-pointer text-hitampudar hover:bg-ungupudar hover:text-ungu"
-          onClick={() => setIsOpen(false)}
-        >
-          <AiOutlineShop className="mr-3 text-xl" />
-          <p>Toko</p>
-        </Link>
-
         <div
           className="flex items-center p-3 mb-1 text-sm font-semibold transition rounded-md cursor-pointer text-hitampudar hover:bg-ungupudar hover:text-ungu"
           onClick={() => {

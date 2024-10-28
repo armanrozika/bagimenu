@@ -5,7 +5,7 @@ import { FiPlusSquare } from "react-icons/fi";
 import Select from "react-select";
 import { api } from "../../../convex/_generated/api";
 import NoData from "../../components/NoData";
-import LoadingLine from "../../components/LoadingLine";
+// import LoadingLine from "../../components/LoadingLine";
 import { useQuery } from "convex/react";
 import { Id } from "../../../convex/_generated/dataModel";
 import ProductList from "../../components/ProductList";
@@ -96,7 +96,7 @@ function Products() {
         </Link>
       </div>
 
-      {isLoading && <LoadingLine />}
+      {/* {isLoading && status === "LoadingFirstPage" && <LoadingLine />} */}
 
       <div className="flex justify-between mt-2 mb-7 items-center">
         <Select
@@ -140,7 +140,7 @@ function Products() {
           }}
         />
       </div>
-      <div className="max-h-[60vh] overflow-y-auto">{renderProduk()}</div>
+      <div className=" overflow-y-auto">{renderProduk()}</div>
       <div className="flex justify-center mt-5">
         <button
           onClick={() => loadMore(ITEMS_PER_PAGE)}

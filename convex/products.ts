@@ -73,7 +73,7 @@ export const add = mutation({
     image_url: v.string(),
     category_id: v.union(v.id("categories"), v.literal("ALL")),
     notes: v.string(),
-    tag_ids: v.array(v.id("tags")),
+    tag_ids: v.union(v.array(v.id("tags")), v.null()),
   },
   handler: async (ctx, args) => {
     const identity = await authorizeUser(ctx, "No Auth: add products");
@@ -94,15 +94,17 @@ export const add = mutation({
         category_id: args.category_id,
         notes: args.notes,
       });
-      const promises: Promise<Id<"productTags">>[] = [];
-      args.tag_ids.forEach((tag_id) => {
-        const inserts = ctx.db.insert("productTags", {
-          tag_id: tag_id,
-          product_id: product,
+      if (args.tag_ids) {
+        const promises: Promise<Id<"productTags">>[] = [];
+        args.tag_ids.forEach((tag_id) => {
+          const inserts = ctx.db.insert("productTags", {
+            tag_id: tag_id,
+            product_id: product,
+          });
+          promises.push(inserts);
         });
-        promises.push(inserts);
-      });
-      await Promise.all(promises);
+        await Promise.all(promises);
+      }
     }
   },
 });

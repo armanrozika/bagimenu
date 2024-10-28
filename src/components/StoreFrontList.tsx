@@ -53,7 +53,7 @@ function StoreFrontList({ products, store }: PropsType) {
     if (!products) return;
     return products.map((product: ProductType) => {
       return (
-        <div key={product._id} className=" bg-white rounded-md p-2 shadow ">
+        <div key={product._id} className=" bg-white rounded p-2 shadow-sm">
           <div
             className="relative"
             onClick={() => {
@@ -65,7 +65,7 @@ function StoreFrontList({ products, store }: PropsType) {
             <FiZoomIn className="absolute cursor-pointer flex top-1/2 text-2xl left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white" />
           </div>
           <div className="p-2">
-            <p className="text-hitampudar font-semibold text-center">
+            <p className="text-hitampudar text-center text-sm">
               {product.name}
             </p>
             <p className="text-sm mt-2 mb-3 text-center">
@@ -83,7 +83,7 @@ function StoreFrontList({ products, store }: PropsType) {
               Pesan via WhatsApp
             </Link> */}
             <button
-              className="bg-[#fa931c] w-full py-2.5 mt-2 rounded-md text-white text-sm font-semibold flex justify-center items-center"
+              className="bg-[#fa931c] w-full py-2 mt-2 rounded-lg text-white text-sm font-semibold flex justify-center items-center"
               onClick={() => sendInvoice(product.name, product.price)}
             >
               Pesan

@@ -30,7 +30,7 @@ function Login() {
   }
 
   if (isSignedIn) {
-    return <Navigate to={"/dashboard"} />;
+    return <Navigate to={"/stores"} />;
   }
 
   return (

@@ -13,21 +13,26 @@ function ProductList({ products }: { products: ProductType[] }) {
     return (
       <div
         key={product._id}
-        className="grid grid-cols-3 lg:grid-cols-4 gap-2 items-center p-2 border-b border-gray-100 transition hover:bg-gray-100 rounded-xl"
+        className="grid grid-cols-3 gap-2 items-center p-2 border-b border-gray-100 transition hover:bg-gray-100 rounded-xl"
       >
         <img
           src={product.image_url}
           alt=""
           className="w-[50px] h-[50px] object-cover rounded-full"
         />
-        <p className="text-hitampudar text-sm font-semibold">{product.name}</p>
-        <p className="text-hitampudar text-sm hidden lg:block">
-          {new Intl.NumberFormat("id-ID", {
-            style: "currency",
-            currency: "IDR",
-            maximumFractionDigits: 0,
-          }).format(product.price)}
-        </p>
+        <div>
+          <p className="text-hitampudar text-sm font-semibold">
+            {product.name}
+          </p>
+          <p className="text-hitampudar text-sm">
+            {new Intl.NumberFormat("id-ID", {
+              style: "currency",
+              currency: "IDR",
+              maximumFractionDigits: 0,
+            }).format(product.price)}
+          </p>
+        </div>
+
         <div className="text-lg flex justify-end">
           <Link to={`/products/edit/${product._id}`}>
             <FiEdit className="text-indigo-500 hover:text-ungu cursor-pointer" />

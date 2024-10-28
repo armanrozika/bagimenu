@@ -61,13 +61,13 @@ function Tags() {
             await form.handleSubmit(submitData)();
             form.reset();
           }}
-          className="flex justify-end items-center mt-5"
+          className="flex lg:justify-end items-center mt-5"
         >
           <input
             required
             type="text"
             placeholder="Nama Tags"
-            className="px-3 py-2 bg-gray-50 rounded-lg mr-5 w-1/3"
+            className="px-3 py-2 bg-gray-50 rounded-lg mr-5 w-1/2 lg:w-1/3"
             {...form.register("name")}
           />
           <button

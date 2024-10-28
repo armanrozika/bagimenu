@@ -13,7 +13,7 @@ function NavigatorPage() {
     const fetch = async () => {
       const user = await addUser();
       if (user) {
-        navigate({ to: "/dashboard" });
+        navigate({ to: "/stores" });
       }
     };
 

@@ -29,7 +29,7 @@ function Toko() {
       return (
         <div
           key={store._id}
-          className="grid items-center grid-cols-12 mt-5 text-sm transition border border-gray-200 p-7 rounded-2xl hover:bg-gray-50"
+          className="lg:grid items-center grid-cols-12 mt-5 text-sm transition border border-gray-200 p-7 rounded-2xl hover:bg-gray-50"
         >
           <div className="flex items-center col-span-6">
             <IoStorefrontOutline className="mr-5 text-4xl text-indigo-400" />
@@ -37,7 +37,7 @@ function Toko() {
               <h1 className="font-semibold text-hitampudar">{store.name}</h1>
               <div className="flex items-center">
                 <Link
-                  to={`/store/${store.url}`}
+                  to={`/${store.url}`}
                   target="_blank"
                   className="text-indigo-500"
                 >
@@ -82,7 +82,7 @@ function Toko() {
     // return value;
     return (
       <Select
-        className="w-1/4"
+        className="lg:w-1/4"
         options={renderOptions()}
         defaultValue={value}
         //@ts-ignore
@@ -119,7 +119,7 @@ function Toko() {
 
       {stores === undefined && <LoadingLine />}
 
-      <div className="flex items-center">
+      <div className="lg:flex items-center">
         <p className="mr-3 text-sm text-hitampudar">Sedang Dikelola:</p>
         {renderSelect()}
       </div>

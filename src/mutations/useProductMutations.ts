@@ -54,14 +54,21 @@ export const useProductMutation = (
   const submitData: SubmitHandler<CreateProductType> = async (formData) => {
     try {
       if (mutationType === MutationType.Create) {
-        const tags = formData.tags.filter((tag) => tag !== false);
+        const tags = () => {
+          if (formData.tags) {
+            const nn = formData.tags.filter((tag) => tag !== false);
+            return nn as Id<"tags">[];
+          } else {
+            return null;
+          }
+        };
         await addProduct({
           name: formData.name,
           price: formData.price,
           image_url: formData.image_url,
           category_id: formData.category_id as Id<"categories">,
           notes: formData.notes,
-          tag_ids: tags as Id<"tags">[],
+          tag_ids: tags(),
         });
       }
       if (mutationType === MutationType.Patch) {
@@ -70,7 +77,6 @@ export const useProductMutation = (
         //so we need to read image_url from the state
         formData.image_url = imgUrl;
         const tags = formData.tags.filter((tag) => tag !== false);
-
         await updateProduct({
           id: id,
           tag_ids: tags as Id<"tags">[],

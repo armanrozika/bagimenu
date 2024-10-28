@@ -46,12 +46,12 @@ function Categories() {
             await send();
             setActiveInput({ id: "", name: "" });
           }}
-          className={`absolute items-center`}
+          className={`absolute left-0 items-center bg-indigo-100 p-2 rounded-lg w-full shadow-xl lg:shadow-none`}
         >
           <input
             required
             type="text"
-            className="border rounded-lg px-3 py-2 border-ungu"
+            className="border rounded-lg px-3 py-2 border-ungu mb-2 lg:mb-0"
             value={activeInput.name}
             onChange={(e) =>
               setActiveInput((prev) => ({ ...prev, name: e.target.value }))
@@ -78,7 +78,7 @@ function Categories() {
       return (
         <div
           key={category._id}
-          className={`border borger-gray-200 p-5 rounded-xl flex justify-between items-center mb-3 hover:border-ungu transition relative`}
+          className={`border borger-gray-200 p-3 lg:p-5 rounded-xl flex justify-between items-center mb-3 hover:border-ungu transition relative`}
         >
           {category._id === activeInput.id && renderForm()}
           <p className="px-3 py-2 text-hitampudar">{category.name}</p>
@@ -120,13 +120,13 @@ function Categories() {
             await form.handleSubmit(submitAdd)();
             form.reset();
           }}
-          className="flex justify-end items-center mt-5"
+          className="flex lg:justify-end items-center mt-5"
         >
           <input
             required
             type="text"
             placeholder="Nama Kategori"
-            className="px-3 py-2 bg-gray-50 rounded-lg mr-5 w-1/3"
+            className="px-3 py-2 bg-gray-50 rounded-lg mr-5 w-1/2 lg:w-1/3"
             {...form.register("name")}
           />
           <button
