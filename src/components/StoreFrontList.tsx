@@ -49,11 +49,21 @@ function StoreFrontList({ products, store }: PropsType) {
     }).format(price);
   };
 
+  const formatTitle = (title: string) => {
+    if (title.length > 16) {
+      return title.slice(0, 15) + "...";
+    }
+    return title;
+  };
+
   const renderProducts = () => {
     if (!products) return;
     return products.map((product: ProductType) => {
       return (
-        <div key={product._id} className=" bg-white rounded p-2 shadow-sm">
+        <div
+          key={product._id}
+          className=" bg-white flex flex-col justify-between rounded p-2 shadow-sm"
+        >
           <div
             className="relative"
             onClick={() => {
@@ -64,9 +74,9 @@ function StoreFrontList({ products, store }: PropsType) {
             <img src={product.image_url} alt="" className="cursor-pointer" />
             <FiZoomIn className="absolute cursor-pointer flex top-1/2 text-2xl left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white" />
           </div>
-          <div className="p-2">
+          <div className="p-2 mb-auto">
             <p className="text-hitampudar text-center text-sm">
-              {product.name}
+              {formatTitle(product.name)}
             </p>
             <p className="text-sm mt-2 mb-3 text-center">
               {new Intl.NumberFormat("id-ID", {

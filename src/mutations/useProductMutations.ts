@@ -52,16 +52,16 @@ export const useProductMutation = (
     },
   });
   const submitData: SubmitHandler<CreateProductType> = async (formData) => {
+    const tags = () => {
+      if (formData.tags) {
+        const nn = formData.tags.filter((tag) => tag !== false);
+        return nn as Id<"tags">[];
+      } else {
+        return null;
+      }
+    };
     try {
       if (mutationType === MutationType.Create) {
-        const tags = () => {
-          if (formData.tags) {
-            const nn = formData.tags.filter((tag) => tag !== false);
-            return nn as Id<"tags">[];
-          } else {
-            return null;
-          }
-        };
         await addProduct({
           name: formData.name,
           price: formData.price,
@@ -76,10 +76,9 @@ export const useProductMutation = (
         //if that's the case, it will not trigger handleFileChange
         //so we need to read image_url from the state
         formData.image_url = imgUrl;
-        const tags = formData.tags.filter((tag) => tag !== false);
         await updateProduct({
           id: id,
-          tag_ids: tags as Id<"tags">[],
+          tag_ids: tags(),
           formData: {
             name: formData.name,
             price: formData.price,

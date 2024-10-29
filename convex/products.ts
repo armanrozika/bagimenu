@@ -112,7 +112,7 @@ export const add = mutation({
 export const patch = mutation({
   args: {
     id: v.id("products"),
-    tag_ids: v.array(v.id("tags")),
+    tag_ids: v.union(v.array(v.id("tags")), v.null()),
     formData: v.object({
       name: v.string(),
       price: v.number(),
@@ -149,15 +149,17 @@ export const patch = mutation({
     await Promise.all(promises);
 
     //add new one
-    const promisesAdd: Promise<Id<"productTags">>[] = [];
-    args.tag_ids.forEach((tag_id) => {
-      const inserts = ctx.db.insert("productTags", {
-        tag_id: tag_id,
-        product_id: args.id,
+    if (args.tag_ids) {
+      const promisesAdd: Promise<Id<"productTags">>[] = [];
+      args.tag_ids.forEach((tag_id) => {
+        const inserts = ctx.db.insert("productTags", {
+          tag_id: tag_id,
+          product_id: args.id,
+        });
+        promisesAdd.push(inserts);
       });
-      promisesAdd.push(inserts);
-    });
-    await Promise.all(promises);
+      await Promise.all(promises);
+    }
   },
 });
 

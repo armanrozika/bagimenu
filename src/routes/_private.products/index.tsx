@@ -140,7 +140,7 @@ function Products() {
           }}
         />
       </div>
-      <div className=" overflow-y-auto">{renderProduk()}</div>
+      <div className="lg:max-h-[50vh] overflow-y-auto">{renderProduk()}</div>
       <div className="flex justify-center mt-5">
         <button
           onClick={() => loadMore(ITEMS_PER_PAGE)}

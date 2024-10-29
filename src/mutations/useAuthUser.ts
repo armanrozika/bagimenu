@@ -1,10 +1,10 @@
 import { useSignUp, useSignIn } from "@clerk/clerk-react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { RegisterType, SignUpType } from "../types/types";
+import { SignUpType } from "../types/types";
 import { useNavigate } from "@tanstack/react-router";
 import toast from "react-hot-toast";
 
-export const useAuthUser = (state: RegisterType) => {
+export const useAuthUser = (state: string) => {
   const { isLoaded, signUp } = useSignUp();
   const { signIn, setActive } = useSignIn();
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ export const useAuthUser = (state: RegisterType) => {
   const submitData: SubmitHandler<SignUpType> = async (formData) => {
     if (!isLoaded) return;
     try {
-      if (state === RegisterType.Signup) {
+      if (state === "signup") {
         if (!setActive) return;
         //user have OAuth, but signup using same email as OAuth
         const userNeedsToBeCreated =
@@ -38,7 +38,7 @@ export const useAuthUser = (state: RegisterType) => {
           navigate({ to: "/verify-email" });
         }
       }
-      if (state === RegisterType.Login) {
+      if (state === "login") {
         const signInAttempt = await signIn?.create({
           identifier: formData.emailAddress,
           password: formData.password,
