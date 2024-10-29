@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as VerifyEmailImport } from './routes/verify-email'
 import { Route as SsoCallbackImport } from './routes/sso-callback'
 import { Route as SsoCallbaccImport } from './routes/sso-callbacc'
+import { Route as ResetPasswordImport } from './routes/reset-password'
 import { Route as LoginImport } from './routes/login'
 import { Route as PrivateImport } from './routes/_private'
 import { Route as StoreurlImport } from './routes/$store_url'
@@ -45,6 +46,11 @@ const SsoCallbackRoute = SsoCallbackImport.update({
 
 const SsoCallbaccRoute = SsoCallbaccImport.update({
   path: '/sso-callbacc',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ResetPasswordRoute = ResetPasswordImport.update({
+  path: '/reset-password',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -158,6 +164,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordImport
       parentRoute: typeof rootRoute
     }
     '/sso-callbacc': {
@@ -306,6 +319,7 @@ export interface FileRoutesByFullPath {
   '/$store_url': typeof StoreurlRoute
   '': typeof PrivateRouteWithChildren
   '/login': typeof LoginRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sso-callbacc': typeof SsoCallbaccRoute
   '/sso-callback': typeof SsoCallbackRoute
   '/verify-email': typeof VerifyEmailRoute
@@ -328,6 +342,7 @@ export interface FileRoutesByTo {
   '/$store_url': typeof StoreurlRoute
   '': typeof PrivateRouteWithChildren
   '/login': typeof LoginRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sso-callbacc': typeof SsoCallbaccRoute
   '/sso-callback': typeof SsoCallbackRoute
   '/verify-email': typeof VerifyEmailRoute
@@ -351,6 +366,7 @@ export interface FileRoutesById {
   '/$store_url': typeof StoreurlRoute
   '/_private': typeof PrivateRouteWithChildren
   '/login': typeof LoginRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sso-callbacc': typeof SsoCallbaccRoute
   '/sso-callback': typeof SsoCallbackRoute
   '/verify-email': typeof VerifyEmailRoute
@@ -375,6 +391,7 @@ export interface FileRouteTypes {
     | '/$store_url'
     | ''
     | '/login'
+    | '/reset-password'
     | '/sso-callbacc'
     | '/sso-callback'
     | '/verify-email'
@@ -396,6 +413,7 @@ export interface FileRouteTypes {
     | '/$store_url'
     | ''
     | '/login'
+    | '/reset-password'
     | '/sso-callbacc'
     | '/sso-callback'
     | '/verify-email'
@@ -417,6 +435,7 @@ export interface FileRouteTypes {
     | '/$store_url'
     | '/_private'
     | '/login'
+    | '/reset-password'
     | '/sso-callbacc'
     | '/sso-callback'
     | '/verify-email'
@@ -440,6 +459,7 @@ export interface RootRouteChildren {
   StoreurlRoute: typeof StoreurlRoute
   PrivateRoute: typeof PrivateRouteWithChildren
   LoginRoute: typeof LoginRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SsoCallbaccRoute: typeof SsoCallbaccRoute
   SsoCallbackRoute: typeof SsoCallbackRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
@@ -451,6 +471,7 @@ const rootRouteChildren: RootRouteChildren = {
   StoreurlRoute: StoreurlRoute,
   PrivateRoute: PrivateRouteWithChildren,
   LoginRoute: LoginRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SsoCallbaccRoute: SsoCallbaccRoute,
   SsoCallbackRoute: SsoCallbackRoute,
   VerifyEmailRoute: VerifyEmailRoute,
@@ -473,6 +494,7 @@ export const routeTree = rootRoute
         "/$store_url",
         "/_private",
         "/login",
+        "/reset-password",
         "/sso-callbacc",
         "/sso-callback",
         "/verify-email",
@@ -503,6 +525,9 @@ export const routeTree = rootRoute
     },
     "/login": {
       "filePath": "login.tsx"
+    },
+    "/reset-password": {
+      "filePath": "reset-password.tsx"
     },
     "/sso-callbacc": {
       "filePath": "sso-callbacc.tsx"

@@ -71,7 +71,11 @@ function StoreFrontList({ products, store }: PropsType) {
               setShowModal(true);
             }}
           >
-            <img src={product.image_url} alt="" className="cursor-pointer" />
+            <img
+              src={product.image_url}
+              alt=""
+              className="cursor-pointer w-[150px] h-[150px] mx-auto"
+            />
             <FiZoomIn className="absolute cursor-pointer flex top-1/2 text-2xl left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-white" />
           </div>
           <div className="p-2 mb-auto">

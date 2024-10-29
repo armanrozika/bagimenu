@@ -94,8 +94,7 @@ function Login() {
 
         {register === "login" && (
           <Link
-            to=""
-            target="_blank"
+            to="/reset-password"
             className="inline-block mt-3 text-right underline text-ungu"
             activeProps={{
               style: {
