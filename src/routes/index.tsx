@@ -15,12 +15,15 @@ function LandingPage() {
       >
         Login
       </Link>
-      <div className="bg-white w-fit mx-auto mb-3 rounded-full p-3">
+      <div className="bg-white w-[60px] h-[60px] flex items-center mx-auto mb-2 rounded-full p-3">
         <Icon />
       </div>
-      <h1 className="text-white text-2xl font-semibold">BagiMenu</h1>
-      <p className="text-white py-5">
-        Cara cepat dan mudah untuk bagi menu jualanmu
+      <h1 className="text-white text-2xl font-semibold mb-3">BagiMenu</h1>
+      <p className="text-white py-3">
+        Cara cepat dan mudah bagikan menu jualanmu
+      </p>
+      <p className="text-white mb-5 font-semibold">
+        Gratis, tanpa biaya apapun!
       </p>
       <div className="flex justify-center items-center text-sm font-semibold text-ungu">
         <Link
