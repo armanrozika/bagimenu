@@ -5,7 +5,7 @@ import { authorizeUser } from "./helper/helper";
 export const add = mutation({
   args: { name: v.string(), url: v.string(), whatsapp: v.string() },
   handler: async (ctx, args) => {
-    args.url = args.url.replaceAll(" ", "");
+    args.url = args.url.replaceAll(" ", "").toLowerCase();
     const identity = await authorizeUser(ctx, "No Auth: add stores");
     const user = await ctx.db
       .query("users")
@@ -83,7 +83,7 @@ export const updateStore = mutation({
     if (store?.owner_identifier !== identity.tokenIdentifier) {
       throw new Error("Identifier Don't Match: patch store");
     }
-    (args.formData.url = args.formData.url.replaceAll(" ", "")),
+    (args.formData.url = args.formData.url.replaceAll(" ", "").toLowerCase()),
       await ctx.db.patch(args.id, args.formData);
   },
 });

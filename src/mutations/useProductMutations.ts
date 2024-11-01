@@ -27,7 +27,7 @@ export const useProductMutation = (
       if (e.target.files) {
         const formData = new FormData();
         formData.append("image", e.target.files[0]);
-        const res = await fetch("https://api.beembingan.com/images", {
+        const res = await fetch("https://api.bagimenu.com/images", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
