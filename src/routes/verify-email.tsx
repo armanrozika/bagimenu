@@ -37,7 +37,7 @@ function VerifyEmail() {
   const addUser = useMutation({
     mutationFn: handleVerify,
     onSuccess: () => {
-      navigate({ to: "/dashboard" });
+      navigate({ to: "/stores" });
     },
   });
 
